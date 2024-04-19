@@ -7,12 +7,13 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "vercel-env": "vercel env pull .env",
-    "prisma:dev": "prisma generate && prisma db push --preview-feature",
-    "prisma:migrate": "prisma migrate dev --preview-feature"
+    "vercel-env": "vercel env pull .env ",
+    "prisma:dev": "prisma generate && pnpm dlx prisma db push",
+    "prisma:migrate": "prisma migrate dev"
   },
   "dependencies": {
     "@prisma/client": "^5.12.1",
+    "@vercel/postgres": "^0.8.0",
     "next": "14.2.2",
     "prisma": "^5.12.1",
     "react": "^18",
