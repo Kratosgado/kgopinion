@@ -21,3 +21,47 @@ a {
   text-decoration: none;
   color: inherit;
 }
+
+@media (max-width: 1536) {
+  .container {
+    width: 1366;
+  }
+}
+
+@media (max-width: 1366) {
+  .container {
+    width: 1280;
+  }
+}
+
+@media (max-width: 1280) {
+  .container {
+    width: 1024;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+@media (max-width: 1024) {
+  .container {
+    width: 768;
+  }
+}
+
+@media (max-width: 768) {
+  .container {
+    width: 640px;
+  }
+}
+
+@media (max-width: 640) {
+  .container {
+    width: 475px;
+  }
+}
+
+@media (max-width: 475) {
+  .container {
+    width: 380px;
+  }
+}
