@@ -8,14 +8,12 @@
     "start": "next start",
     "lint": "next lint",
     "vercel-env": "vercel env pull .env ",
-    "prisma:dev": "prisma generate && yarn prisma db push",
+    "prisma:dev": "prisma generate && pnpm dlx prisma db push",
     "prisma:migrate": "prisma migrate dev"
   },
   "dependencies": {
-    "@prisma/client": "^5.12.1",
-    "@vercel/postgres": "^0.8.0",
+    "mongoose": "^8.5.3",
     "next": "14.2.2",
-    "prisma": "^5.12.1",
     "react": "^18",
     "react-dom": "^18"
   },
@@ -30,5 +28,5 @@
   "prisma": {
     "schema": "src/prisma/schema.prisma"
   },
-  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+  "packageManager": "pnpm@9.7.1+sha512.faf344af2d6ca65c4c5c8c2224ea77a81a5e8859cbc4e06b1511ddce2f0151512431dd19e6aff31f2c6a8f5f2aced9bd2273e1fed7dd4de1868984059d2c4247"
 }
