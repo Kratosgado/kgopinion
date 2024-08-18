@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  kgopinion:
+    image: kgopinion
+    build:
+      context: .
+      dockerfile: ./Dockerfile
