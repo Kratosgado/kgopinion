@@ -3,7 +3,7 @@
   display: none;
 }
 
-@media (max-width: 768ps) {
+@media (max-width: 768px) {
   .links {
     display: none;
   }
