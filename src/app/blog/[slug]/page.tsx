@@ -1,6 +1,6 @@
 import Image from "next/image";
 import styles from "./singlePost.module.css";
-import { PostProps } from "@/conponents/postCard/PostCard";
+import { PostProps } from "@/components/postCard/PostCard";
 
 const getPost = async (slug: any) => {
   const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${slug}`);

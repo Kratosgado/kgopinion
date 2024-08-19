@@ -1,8 +1,14 @@
 version: '3.4'
 
 services:
-  kgopinion:
-    image: kgopinion
+  vercelpostgres:
+    image: vercelpostgres
     build:
-      context: .
+      context: node_modules/@vercel/postgres
       dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: development
+    ports:
+      - 3000:3000
+      - 9229:9229
+    command: ["node", "--inspect=0.0.0.0:9229", "./dist/index.cjs"]

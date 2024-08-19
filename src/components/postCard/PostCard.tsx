@@ -4,6 +4,7 @@ import Link from "next/link";
 
 export type PostProps = {
   id: string;
+  desc: string;
   title: string;
   body: string;
 };
