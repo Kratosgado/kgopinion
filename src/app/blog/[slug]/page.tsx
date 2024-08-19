@@ -1,14 +1,14 @@
 import Image from "next/image";
 import styles from "./singlePost.module.css";
-import { PostProps } from "@/components/postCard/PostCard";
+import { Post } from "@/lib/models/post";
 
-const getPost = async (slug: any) => {
+const getPost = async (slug: string) => {
   const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${slug}`);
   if (!res.ok) {
     throw new Error("Something went wrong");
   }
 
-  return (await res.json()) as PostProps;
+  return (await res.json()) as Post;
 };
 
 const SinglePostPage = async ({ params }: { params: any }) => {

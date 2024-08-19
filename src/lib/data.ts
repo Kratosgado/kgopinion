@@ -5,7 +5,7 @@ import { connectToDb } from "./utils"
 export const getPosts = async () => {
    try {
       await connectToDb();
-      const posts = await Post.find();
+      const posts = await Post.find<Post>();
       console.log("Posts: " + posts)
       return posts;
    } catch (error) {

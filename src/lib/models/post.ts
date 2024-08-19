@@ -9,7 +9,7 @@ export type Post = {
    slug: string;
    body: string;
 };
- 
+
 const postSchema = new mongoose.Schema<Post>({
    title: {
       type: String,

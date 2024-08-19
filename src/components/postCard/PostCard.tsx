@@ -1,15 +1,9 @@
 import Image from "next/image";
 import styles from "./postCard.module.css";
 import Link from "next/link";
+import { Post } from "@/lib/models/post";
 
-export type PostProps = {
-  id: string;
-  desc: string;
-  title: string;
-  body: string;
-};
-
-const PostCard = ({ post }: { post: PostProps }) => {
+const PostCard = ({ post }: { post: Post }) => {
   return (
     <div className={styles.container}>
       <div className={styles.top}>
