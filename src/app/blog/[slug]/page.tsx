@@ -1,14 +1,27 @@
 import Image from "next/image";
 import styles from "./singlePost.module.css";
+import { PostProps } from "@/conponents/postCard/PostCard";
 
-const SinglePostPage = () => {
+const getPost = async (slug: any) => {
+  const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${slug}`);
+  if (!res.ok) {
+    throw new Error("Something went wrong");
+  }
+
+  return (await res.json()) as PostProps;
+};
+
+const SinglePostPage = async ({ params }: { params: any }) => {
+  const { slug } = params;
+  const post = await getPost(slug);
+
   return (
     <div className={styles.container}>
       <div className={styles.imgContainer}>
         <Image src="/about.png" alt="" fill sizes="50" className={styles.img} />
       </div>
       <div className={styles.textContainer}>
-        <h1 className={styles.title}>Title</h1>
+        <h1 className={styles.title}>{post.title}</h1>
         <div className={styles.detail}>
           <Image
             src="/about.png"
@@ -26,11 +39,7 @@ const SinglePostPage = () => {
             <span className={styles.detailValue}>01.01.2024</span>
           </div>
         </div>
-        <div className={styles.content}>
-          More like the description of each posts, relax we will be doing
-          everything and all will be fine just combine what you want and you
-          want go ole, fact on the only
-        </div>
+        <div className={styles.content}>{post.body} </div>
       </div>
     </div>
   );

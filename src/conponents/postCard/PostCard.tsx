@@ -2,7 +2,13 @@ import Image from "next/image";
 import styles from "./postCard.module.css";
 import Link from "next/link";
 
-const PostCard = () => {
+export type PostProps = {
+  id: string;
+  title: string;
+  body: string;
+};
+
+const PostCard = ({ post }: { post: PostProps }) => {
   return (
     <div className={styles.container}>
       <div className={styles.top}>
@@ -12,12 +18,8 @@ const PostCard = () => {
         <span className={styles.date}>01.01.2024</span>
       </div>
       <div className={styles.bottom}>
-        <h1 className={styles.title}>Title</h1>
-        <p className={styles.desc}>
-          More like the description of each posts, relax we will be doing
-          everything and all will be fine just combine what you want and you
-          want go ole, fact on the only
-        </p>
+        <h1 className={styles.title}>{post.title}</h1>
+        <p className={styles.desc}>{post.body}</p>
         <Link className={styles.link} href="/blog/post">
           READ MORE
         </Link>
