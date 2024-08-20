@@ -8,7 +8,7 @@ export const connectToDb = async () => {
          console.log("using exxisting connection");
          return;
       }
-      const db = await mongoose.connect(process.env.MONGO || "");
+      const db = await mongoose.connect(process.env.MONGO || process.env.MONGO_ONLINE || "");
       connection = db.connections[0];
    } catch (error) {
       console.log(error);
