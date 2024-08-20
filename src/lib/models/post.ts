@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+import mongoose, { ObjectId } from "mongoose"
 
 export type Post = {
    id: string;
@@ -8,6 +8,7 @@ export type Post = {
    title: string;
    slug: string;
    body: string;
+   createdAt: Date;
 };
 
 const postSchema = new mongoose.Schema<Post>({
@@ -28,6 +29,10 @@ const postSchema = new mongoose.Schema<Post>({
       type: String,
       required: true,
       unique: true,
+   },
+   createdAt: {
+      type: Date,
+      default: Date.now,
    }
 },
    { timestamps: true }
