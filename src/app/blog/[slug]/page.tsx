@@ -4,10 +4,11 @@ import { Post } from "@/lib/models/post";
 
 import PostUser from "@/components/postUser/PostUser";
 import { Suspense } from "react";
+import { API } from "@/lib/utils";
 // import { getPost } from "@/lib/data";
 
 const getPost = async (slug: string) => {
-  const res = await fetch(`http://localhost:3000/api/blog/${slug}`, {
+  const res = await fetch(`${API}/blog/${slug}`, {
     next: { revalidate: 3600 },
   });
   if (!res.ok) {

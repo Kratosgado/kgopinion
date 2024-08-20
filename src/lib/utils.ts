@@ -17,3 +17,5 @@ export const connectToDb = async () => {
       throw error;
    }
 }
+
+export const API = process.env.API || "/api";
