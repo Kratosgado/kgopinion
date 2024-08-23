@@ -8,7 +8,7 @@ export const connectToDb = async () => {
          console.log("using exxisting connection");
          return;
       }
-      const db = await mongoose.connect(process.env.MONGO || process.env.MONGO_ONLINE || "", {
+      const db = await mongoose.connect(process.env.MONGO_ONLINE || "", {
          dbName: process.env.DB_NAME,
       });
       connection = db.connections[0];
@@ -18,4 +18,4 @@ export const connectToDb = async () => {
    }
 }
 
-export const API = process.env.API || "/api";
+export const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL || "/api";

@@ -4,23 +4,32 @@ import { Post } from "@/lib/models/post";
 
 import PostUser from "@/components/postUser/PostUser";
 import { Suspense } from "react";
-import { API } from "@/lib/utils";
+import { NEXT_PUBLIC_API_URL } from "@/lib/utils";
+import { getPost } from "@/lib/data";
 // import { getPost } from "@/lib/data";
 
-const getPost = async (slug: string) => {
-  const res = await fetch(`${API}/blog/${slug}`, {
-    next: { revalidate: 3600 },
-  });
-  if (!res.ok) {
-    console.error(res);
-    throw Error("Something went wrong");
-  }
-  return res.json();
-};
+// const getPost = async (slug: string) => {
+//   const res = await fetch(`${NEXT_PUBLIC_API_URL}/blog/${slug}`, {
+//     next: { revalidate: 3600 },
+//   });
+//   if (!res.ok) {
+//     console.error(res);
+//     return null;
+//   }
+//   return res.json();
+// };
 
 export const generateMetadata = async ({ params }: { params: any }) => {
   const { slug } = params;
   const post: Post = await getPost(slug);
+
+  if (!post) {
+    return {
+      title: "Post not found",
+      description: "",
+      image: "",
+    };
+  }
 
   return {
     title: post.title,
@@ -32,6 +41,10 @@ export const generateMetadata = async ({ params }: { params: any }) => {
 const SinglePostPage = async ({ params }: { params: any }) => {
   const { slug } = params;
   const post: Post = await getPost(slug);
+
+  if (!post) {
+    return <div>Post not found</div>;
+  }
 
   return (
     <div className={styles.container}>
