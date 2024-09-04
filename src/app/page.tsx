@@ -5,16 +5,15 @@ const Home = () => {
   return (
     <div className={styles.container}>
       <div className={styles.textContainer}>
-        <h1 className={styles.title}>Kratosgado Educating Public</h1>
+        <h1 className={styles.title}>KGOPINION ~ INSIGHTS ON TECH AND MORE</h1>
         <p className={styles.desc}>
-          This will be the description of the website. It will be a place where
+          <b>KGOPINION</b> offers thought-provoking articles and expert opinions on the latest in technology, science, and a variety of trending topics. Dive into in-depth analyses, personal perspectives, and fresh takes from a unique voice in the tech and science world.
         </p>
         <div className={styles.buttons}>
           <button className={styles.button}>Learn More</button>
           <button className={styles.button}>Contact</button>
         </div>
         <div className={styles.brands}>
-          <Image src="/brands.png" alt="" fill className={styles.brandImg} />
         </div>
       </div>
       <div className={styles.imgContainer}>

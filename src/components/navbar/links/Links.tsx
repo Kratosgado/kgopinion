@@ -38,7 +38,7 @@ const Links = () => {
       {session ? (
         <>
           {isAdmin && <NavLink item={{ title: "Admin", path: "/admin" }} />}
-          <button className={styles.logout}>Logout</button>
+          <button className={styles.logout}>SignOut</button>
         </>
       ) : (
         <NavLink item={{ title: "Login", path: "/login" }} />
@@ -47,8 +47,8 @@ const Links = () => {
         className={styles.menuButton}
         alt="menu"
         src="/menu.png"
-        width={30}
-        height={30}
+        width={50}
+        height={50}
         onClick={() => setOpen((prev) => !prev)}
       />
       {open && (

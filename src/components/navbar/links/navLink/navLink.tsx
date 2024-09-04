@@ -5,6 +5,8 @@ import styles from "./navLink.module.css";
 import { usePathname } from "next/navigation";
 import { LinkType } from "../../utils";
 
+
+
 const NavLink = ({ item }: { item: LinkType }) => {
   const pathName = usePathname();
 

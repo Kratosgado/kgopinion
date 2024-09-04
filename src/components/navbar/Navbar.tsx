@@ -6,7 +6,8 @@ const Navbar = () => {
   return (
     <div className={styles.container}>
       <Link href="/" className={styles.logo}>
-        Logo
+        
+        <img src="/Logo.jpg" alt="site logo" className={styles.logoImage}/>
       </Link>
       <div>
         <Links />
