@@ -5,7 +5,8 @@ import { Post } from "@/lib/models/post";
 import PostUser from "@/components/postUser/PostUser";
 import { Suspense } from "react";
 import { NEXT_PUBLIC_API_URL } from "@/lib/utils";
-import { getPost } from "@/lib/data";
+import { getPost, getUser } from "@/lib/data";
+import { User } from "@/lib/models/user";
 // import { getPost } from "@/lib/data";
 
 // const getPost = async (slug: string) => {
@@ -46,12 +47,13 @@ const SinglePostPage = async ({ params }: { params: any }) => {
     return <div>Post not found</div>;
   }
 
+
   return (
     <div className={styles.container}>
       {post.img && (
         <div className={styles.imgContainer}>
           <Image
-            src="/about.png"
+            src={post.img}
             alt=""
             fill
             sizes="50"

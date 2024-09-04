@@ -1,0 +1,20 @@
+
+Posts:
+  adding
+  deleting
+  updating
+
+Users:
+  signing in
+  signing up 
+  updating user data
+
+Designer:
+  view for creating Posts:
+    widgets: resizable and movable,
+      Column and Row views
+      Paragraph
+      Code
+      Image: could use the prebuild one
+
+  Section to list widgets

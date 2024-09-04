@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema<User>({
       default: false,
    },
 },
-   { timestamps: true }
+   { timestamps: true , _id: true}
 );
 
 

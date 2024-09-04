@@ -12,7 +12,7 @@ const PostCard = ({ post }: { post: Post }) => {
             <Image src={post.img} alt="post" fill className={styles.img} />
           </div>
         )}
-        <span className={styles.date}>01.01.2024</span>
+        <span className={styles.date}>{post.createdAt.toISOString().split('T')[0]}</span>
       </div>
       <div className={styles.bottom}>
         <h1 className={styles.title}>{post.title}</h1>
