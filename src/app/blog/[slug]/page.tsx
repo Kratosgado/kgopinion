@@ -47,18 +47,11 @@ const SinglePostPage = async ({ params }: { params: any }) => {
     return <div>Post not found</div>;
   }
 
-
   return (
     <div className={styles.container}>
       {post.img && (
         <div className={styles.imgContainer}>
-          <Image
-            src={post.img}
-            alt=""
-            fill
-            sizes="50"
-            className={styles.img}
-          />
+          <Image src={post.img} alt="" fill sizes="50" className={styles.img} />
         </div>
       )}
       <div className={styles.textContainer}>

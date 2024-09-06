@@ -30,6 +30,10 @@ const postSchema = new mongoose.Schema<Post>({
       required: true,
       unique: true,
    },
+   body: {
+      type: String,
+      required: true,
+   },
    createdAt: {
       type: Date,
       default: Date.now,
