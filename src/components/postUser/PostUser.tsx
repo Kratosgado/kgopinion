@@ -3,9 +3,7 @@ import Image from "next/image";
 import styles from "./postUser.module.css";
 import { User } from "@/lib/models/user";
 
-const PostUser = async ({ userId }: { userId: string }) => {
-  const user: User | null = await getUser(userId);
-
+const PostUser = ({ user }: { user: User }) => {
   return (
     <div className={styles.container}>
       {user && (

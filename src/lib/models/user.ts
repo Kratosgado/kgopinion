@@ -1,11 +1,12 @@
-import mongoose from "mongoose";
+import mongoose, { Document } from "mongoose";
 
-export type User = {
+export type User = Document & {
    username: string;
    email: string;
    password: string;
    img: string;
    isAdmin: boolean;
+   posts: mongoose.Schema.Types.ObjectId[];
 }
 
 const userSchema = new mongoose.Schema<User>({
@@ -28,8 +29,9 @@ const userSchema = new mongoose.Schema<User>({
       type: Boolean,
       default: false,
    },
+   posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
 },
-   { timestamps: true , _id: true}
+   { timestamps: true, _id: true }
 );
 
 

@@ -1,10 +1,11 @@
-import mongoose, { ObjectId } from "mongoose"
+import mongoose, { Document, ObjectId } from "mongoose"
+import { User } from "./user";
 
-export type Post = {
+export type Post = Document & {
    id: string;
    desc: string;
    img: string;
-   userId: string;
+   user: mongoose.Schema.Types.ObjectId | User;
    title: string;
    slug: string;
    body: string;
@@ -21,8 +22,9 @@ const postSchema = new mongoose.Schema<Post>({
       required: true,
    },
    img: { type: String },
-   userId: {
-      type: String,
+   user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
       required: true,
    },
    slug: {

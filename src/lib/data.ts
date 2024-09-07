@@ -22,12 +22,16 @@ export const getPost = async (slug: string) => {
    try {
       await connectToDb();
       console.info("finding post with slug: " + slug)
-      const post = await Post.findOne({ slug });
-      console.log("Post: " + post?.slug)
+      const post = await Post.findOne<Post>({ slug }).populate("user");
+      if (!post) {
+         throw new Error("Post not found");
+      }
+      console.log("post user: " + post);
+      console.log("post user: " + (post.user as User).username);
       return post;
    } catch (error) {
       console.log(error);
-      throw new Error("Error fetching post: " + error)
+      throw new Error("Error fetching post: " + error);
    }
 }
 
@@ -50,6 +54,29 @@ export const getUsers = async () => {
       const users = await User.find<User>();
       console.log("Users: " + users)
       return users;
+   } catch (error) {
+      console.error(error);
+      throw error;
+   }
+}
+
+export const createUser = async (username: string, email: string, password: string) => {
+   try {
+      await connectToDb();
+      const newUser = await User.create({ username, email, password });
+      return newUser;
+   } catch (error) {
+      console.error(error);
+      throw error;
+   }
+}
+
+export const createPost = async (title: string, desc: string, img: string, user: string, slug: string, body: string) => {
+   try {
+      await connectToDb();
+      const newPost = await Post.create({ title, desc, img, user, slug, body });
+      await User.findByIdAndUpdate(user, { $push: { posts: newPost._id } });
+      return newPost;
    } catch (error) {
       console.error(error);
       throw error;

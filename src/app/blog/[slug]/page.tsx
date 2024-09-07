@@ -66,7 +66,7 @@ const SinglePostPage = async ({ params }: { params: any }) => {
           />
           {post && (
             <Suspense fallback={<div>Loading...</div>}>
-              <PostUser userId={post.userId} />
+              <PostUser user={post.user as User} />
             </Suspense>
           )}
           <div className={styles.detailText}>
