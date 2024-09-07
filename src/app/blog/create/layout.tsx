@@ -1,11 +1,11 @@
-import { Inter } from 'next/font/google'
+import { Inter } from "next/font/google";
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] });
 
 export default function BlogCreateLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
@@ -13,5 +13,5 @@ export default function BlogCreateLayout({
         {children}
       </body>
     </html>
-  )
+  );
 }
