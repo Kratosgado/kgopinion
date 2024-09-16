@@ -4,7 +4,6 @@ import { Post } from "@/lib/models/post";
 
 import PostUser from "@/components/postUser/PostUser";
 import { Suspense } from "react";
-import { NEXT_PUBLIC_API_URL } from "@/lib/utils";
 import { getPost, getUser } from "@/lib/data";
 import { User } from "@/lib/models/user";
 // import { getPost } from "@/lib/data";

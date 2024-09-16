@@ -3,7 +3,7 @@
 import { Post } from "./models/post";
 import { unstable_noStore as noStore } from 'next/cache';
 import { User } from "./models/user";
-import { connectToDb } from "./utils"
+import { connectToDb } from "./connectDb"
 
 
 export const getPosts = async () => {

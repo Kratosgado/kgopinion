@@ -1,7 +1,7 @@
 import PostCard from "@/components/postCard/PostCard";
 import styles from "./blog.module.css";
 import { Post } from "@/lib/models/post";
-import { NEXT_PUBLIC_API_URL } from "@/lib/utils";
+// import { NEXT_PUBLIC_API_URL } from "@/lib/utils";
 import { getPosts } from "@/lib/data";
 // import { getPosts } from "@/lib/data";
 

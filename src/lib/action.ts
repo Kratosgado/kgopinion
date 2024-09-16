@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { Post } from "./models/post";
-import { connectToDb } from "./utils";
+import { connectToDb } from "./connectDb";
 
 
 export const addPost = async (formData: FormData) => {
