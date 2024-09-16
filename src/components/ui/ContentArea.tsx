@@ -139,7 +139,6 @@ export function ContentArea({ components }: ContentAreaProps) {
           </div>
         );
       })}
-      <Button className="mt-6">Publish Post</Button>
     </div>
   );
 }

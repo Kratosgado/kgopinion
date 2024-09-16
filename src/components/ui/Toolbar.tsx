@@ -2,6 +2,7 @@ import { Copy, Redo, Undo, Delete, Save, View, Send, Plus } from "lucide-react";
 import { Button } from "./button";
 import { Sheet, SheetContent, SheetTrigger } from "./sheet";
 import { Sidebar } from "./Sidebar";
+import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 
 export const Toolbar = ({
   onAddComponent,
@@ -44,6 +45,10 @@ export const Toolbar = ({
         <Button variant="secondary">
           <Send /> Publish
         </Button>
+        {/* <Avatar>
+          <AvatarImage src="https://avatars.dicebear.com/api/avataaars/john-doe.svg" />
+          <AvatarFallback>JD</AvatarFallback>
+        </Avatar> */}
       </div>
     </div>
   );
