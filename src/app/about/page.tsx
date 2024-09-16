@@ -13,23 +13,22 @@ const AboutPage = () => {
       <div className={styles.textContainer}>
         <h2 className={styles.subtitle}>About KgOpinion</h2>
         <h1 className={styles.title}>
-          We create digital ideas that are bigger, bolder, braver and better.
+          KGOPINION ~ The Origin.
         </h1>
         <p className={styles.desc}>
+          We are a team of two who aim to leave a mark on this world in our own way.
           We create digital ideas that are bigger, bolder, braver and better. we
-          believe in good ideas flexibility and precission we&aposre world&aposs
-          Our Special Team best best consulting & finance solution provider.
+          believe in good ideas, flexibility and precision.
+          Our Special Team also aims to provide various tech services for anything at all.
         </p>
         <div className={styles.boxes}>
           <div className={styles.box}>
-            <h1>10 K+</h1> <p>Year of experience</p>
+            <h1>2+</h1> <p>Years of experience</p>
           </div>
           <div className={styles.box}>
-            <h1>10 K+</h1> <p>Year of experience</p>
+            <h1>0+</h1> <p>subscribers</p>
           </div>
-          <div className={styles.box}>
-            <h1>10 K+</h1> <p>Year of experience</p>
-          </div>
+          
         </div>
       </div>
       <div className={styles.imgContainer}>
