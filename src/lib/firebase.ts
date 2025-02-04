@@ -9,7 +9,7 @@ import { getStorage } from 'firebase/storage';
 // dotenv.config();
 // Your web app's Firebase configuration
 const firebaseConfig = {
-	apiKey: 'AIzaSyDhsg8Ws-Ut0ieDtVnWtnGXs15AU2Oiw8Y',
+	apiKey: '',
 	authDomain: 'zomujo-emr.firebaseapp.com',
 	projectId: 'zomujo-emr',
 	storageBucket: 'zomujo-emr.appspot.com',
