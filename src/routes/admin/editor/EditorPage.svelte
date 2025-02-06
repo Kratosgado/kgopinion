@@ -5,6 +5,8 @@
 	import StarterKit from '@tiptap/starter-kit';
 	import { Editor } from '@tiptap/core';
 	import { onMount } from 'svelte';
+	import Image from '@tiptap/extension-image';
+	import { post } from './post.svelte.ts';
 
 	let element: HTMLDivElement;
 	let editor: Editor;
@@ -13,12 +15,16 @@
 		editor = new Editor({
 			element: element,
 			extensions: [
+				Image,
 				Color.configure({ types: [TextStyle.name, ListItem.name] }),
 				TextStyle.configure({ types: [ListItem.name] }),
 				// TextStyle.configure(),
 				StarterKit
 			],
-			content: ``,
+			content: post.content,
+			onUpdate: ({ editor }) => {
+				post.content = editor.getHTML();
+			},
 			onTransaction: () => {
 				// Force re-render so `editor.isActive` works as expected
 				editor = editor;
@@ -190,3 +196,18 @@
 {/if}
 
 <div bind:this={element} class="prose max-w-none" />
+
+<style>
+	.prose :global(img) {
+		cursor: move;
+		transition: transform 0.2s ease;
+	}
+
+	.prose :global(img):hover {
+		transform: scale(1.02);
+	}
+
+	.prose :global(.dragging) {
+		opacity: 0.5;
+	}
+</style>

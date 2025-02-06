@@ -1,78 +1,23 @@
 <script lang="ts">
-	import { onMount, onDestroy } from 'svelte';
-	import { Editor } from '@tiptap/core';
-	import StarterKit from '@tiptap/starter-kit';
-	import Image from '@tiptap/extension-image';
-	import Elements from './Elements.svelte';
 	import Details from './Details.svelte';
 	import EditorPage from './EditorPage.svelte';
+	import Preview from './Preview.svelte';
 
-	import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
-	import * as lowlight from 'lowlight';
-	import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-	import { db } from '$lib/firebase';
-	import { doc, setDoc, Timestamp } from 'firebase/firestore';
-	import { auth } from '$lib/firebase';
-	import type { Post, SEO } from '$lib/types';
-
-	// Editor state
-	let element: HTMLDivElement;
-	let editor: Editor;
-	const storage = getStorage();
-
-	// Form state
-	let post: Post = $state({
-		title: '',
-		content: '',
-		slug: '',
-		published: false,
-		author: auth.currentUser?.uid || '',
-		categories: [],
-		featuredImage: '',
-		excerpt: '',
-		seo: {
-			title: '',
-			description: '',
-			keywords: []
-		},
-		createdAt: Timestamp.now(),
-		updatedAt: Timestamp.now()
-	});
-
-	// Editor initialization
-	onMount(() => {
-		editor = new Editor({
-			element,
-			extensions: [
-				StarterKit,
-				Image.configure({
-					HTMLAttributes: {
-						class: 'rounded-box shadow-lg mx-auto max-w-full h-auto cursor-move',
-						draggable: true
-					}
-				}),
-				CodeBlockLowlight.configure({
-					lowlight,
-					HTMLAttributes: {
-						class: 'bg-base-200 p-4 rounded-box'
-					}
-				})
-			],
-			content: post.content,
-			onUpdate: ({ editor }) => {
-				post.content = editor.getHTML();
-			}
-		});
-	});
+	let showPreview = $state(false);
+	$inspect(showPreview);
 </script>
 
 <div class="min-h-screen bg-base-200 p-4">
 	<div class="flex flex-row gap-4">
 		<!-- <Elements /> -->
-		<div>
-			<EditorPage />
-		</div>
-		<Details />
+		{#if showPreview}
+			<Preview togglePreview={() => (showPreview = !showPreview)} />
+		{:else}
+			<div>
+				<EditorPage />
+			</div>
+			<Details togglePreview={() => (showPreview = !showPreview)} />
+		{/if}
 	</div>
 </div>
 
