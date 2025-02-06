@@ -12,7 +12,6 @@
 	});
 
 	onDestroy(() => unsubscribe());
-	import { goto } from '$app/navigation';
 </script>
 
 <NavBar />

@@ -10,7 +10,7 @@
 	}
 </script>
 
-<section class="hero bg-gradient-to-r from-indigo-500 to-purple-500 py-16 text-white">
+<section class="hero w-auto bg-gradient-to-r from-indigo-500 to-purple-500 py-16 text-white">
 	<div class="container mx-auto text-center">
 		<h1 class="mb-4 text-4xl font-bold">Welcome to My Blog</h1>
 		<p class="mb-8 text-lg">

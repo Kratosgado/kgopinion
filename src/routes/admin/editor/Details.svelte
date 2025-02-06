@@ -10,10 +10,10 @@
 	import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 	import * as lowlight from 'lowlight';
 	import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-	import { db } from '$lib/firebase';
+	import { db, auth } from '../../../lib/firebase';
 	import { doc, setDoc, Timestamp } from 'firebase/firestore';
-	import { auth } from '$lib/firebase';
-	import type { Post, SEO } from '$lib/types';
+	// import { auth } from '$lib/firebase';
+	import type { Post, SEO } from '../../../lib/types';
 
 	// Editor state
 	let element: HTMLDivElement;
@@ -66,27 +66,48 @@
 	});
 </script>
 
-<div class="min-h-screen bg-base-200 p-4">
-	<div class="flex flex-row gap-4">
-		<!-- <Elements /> -->
-		<div>
-			<EditorPage />
-		</div>
-		<Details />
+<!-- Right Column - Post Details -->
+<div class="space-y-4 rounded-box bg-base-100 p-4 shadow-lg">
+	<h2 class="text-lg font-bold">Post Details</h2>
+
+	<div class="form-control">
+		<label class="label">
+			<span class="label-text">Title</span>
+		</label>
+		<input type="text" bind:value={post.title} class="input input-bordered" />
+	</div>
+
+	<div class="form-control">
+		<label class="label">
+			<span class="label-text">Slug</span>
+		</label>
+		<input type="text" bind:value={post.slug} class="input input-bordered" />
+	</div>
+
+	<div class="form-control">
+		<label class="label">
+			<span class="label-text">Excerpt</span>
+		</label>
+		<textarea bind:value={post.excerpt} class="textarea textarea-bordered h-24" />
+	</div>
+
+	<div class="form-control">
+		<label class="label">
+			<span class="label-text">Featured Image</span>
+		</label>
+		<input
+			type="file"
+			accept="image/*"
+			class="file-input file-input-bordered w-full"
+			on:change={(e) => handleImageUpload(e.target.files?.[0])}
+		/>
+	</div>
+
+	<div class="divider"></div>
+
+	<div class="flex gap-2">
+		<button class="btn btn-primary flex-1"> Preview </button>
+		<button class="btn btn-success flex-1"> Save Draft </button>
+		<button class="btn btn-accent flex-1"> Publish </button>
 	</div>
 </div>
-
-<style>
-	.prose :global(img) {
-		cursor: move;
-		transition: transform 0.2s ease;
-	}
-
-	.prose :global(img):hover {
-		transform: scale(1.02);
-	}
-
-	.prose :global(.dragging) {
-		opacity: 0.5;
-	}
-</style>
