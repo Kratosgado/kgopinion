@@ -6,7 +6,7 @@
 	import { Editor } from '@tiptap/core';
 	import { onMount } from 'svelte';
 	import Image from '@tiptap/extension-image';
-	import { post } from './post.svelte.ts';
+	import { post } from './post.svelte';
 
 	let element: HTMLDivElement;
 	let editor: Editor;
@@ -15,7 +15,13 @@
 		editor = new Editor({
 			element: element,
 			extensions: [
-				Image,
+				// Image,
+				Image.configure({
+					HTMLAttributes: {
+						class: 'rounded-box shadow-lg mx-auto max-w-full h-auto cursor-move',
+						draggable: true
+					}
+				}),
 				Color.configure({ types: [TextStyle.name, ListItem.name] }),
 				TextStyle.configure({ types: [ListItem.name] }),
 				// TextStyle.configure(),
@@ -195,7 +201,7 @@
 	</div>
 {/if}
 
-<div bind:this={element} class="prose max-w-none" />
+<div bind:this={element} class="prose max-w-none"></div>
 
 <style>
 	.prose :global(img) {

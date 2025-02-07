@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { post } from './post.svelte.ts';
+	import PostView from '../blog/+page.svelte';
 	let { togglePreview }: { togglePreview: Function } = $props();
 </script>
 
@@ -25,6 +26,7 @@
 			</button>
 		</div>
 		<div class="prose">
+			<PostView {post} />
 			{@html post.content}
 		</div>
 	</div>

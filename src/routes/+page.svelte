@@ -1,13 +1,9 @@
 <!-- src/routes/+page.svelte -->
 <script lang="ts">
-	export let data: {
-		posts: Array<{ id: string; title: string; excerpt: string; createdAt: Date }>;
-	};
+	import type { Post } from '$lib/types';
+	import { formatDate } from '$lib/utils';
 
-	// Format date for display
-	function formatDate(date: Date): string {
-		return new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' }).format(date);
-	}
+	export let data: { posts: Post[] };
 </script>
 
 <section class="hero w-auto bg-gradient-to-r from-indigo-500 to-purple-500 py-16 text-white">
@@ -31,7 +27,7 @@
 		<ul class="grid grid-cols-1 gap-8 md:grid-cols-3">
 			{#each data.posts as post}
 				<li class="rounded-md bg-white p-6 shadow-md">
-					<h3 class="mb-2 text-xl font-bold"><a href={`/post/${post.id}`}>{post.title}</a></h3>
+					<h3 class="mb-2 text-xl font-bold"><a href={`/blog/${post.slug}`}>{post.title}</a></h3>
 					<p class="mb-4 text-gray-600">{post.excerpt}</p>
 					<p class="text-sm text-gray-500">{formatDate(post.createdAt)}</p>
 				</li>

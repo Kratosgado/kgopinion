@@ -20,18 +20,3 @@
 		{/if}
 	</div>
 </div>
-
-<style>
-	.prose :global(img) {
-		cursor: move;
-		transition: transform 0.2s ease;
-	}
-
-	.prose :global(img):hover {
-		transform: scale(1.02);
-	}
-
-	.prose :global(.dragging) {
-		opacity: 0.5;
-	}
-</style>

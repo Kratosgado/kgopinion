@@ -4,32 +4,25 @@ import type { Post } from '$lib/types';
 import { error } from '@sveltejs/kit';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 
-export async function savePostOrUpdate(post: Post): Promise<void> {
+export async function savePostOrUpdate(post: Post): Promise<string> {
 	try {
-		if (post.id) {
-			// Update existing document.
-			const postRef = doc(db, 'posts', post.id);
-			await setDoc(
-				postRef,
-				{
-					...post,
-					updatedAt: serverTimestamp()
-				},
-				{ merge: true }
-			);
-			console.log('Post updated with ID:', post.id);
-		} else {
-			// Create a new document.
-			const docRef = await addDoc(collection(db, 'posts'), {
+		const slug = generateSlug(post.title);
+		// Update existing document.
+		const postRef = doc(db, 'posts', slug);
+		await setDoc(
+			postRef,
+			{
 				...post,
-				createdAt: serverTimestamp(),
+				slug,
+				createdAt: post.createdAt || serverTimestamp(),
 				updatedAt: serverTimestamp()
-			});
-			console.log('Post created with ID:', docRef.id);
-		}
+			},
+			{ merge: true }
+		);
+		return 'post updated successfully';
 	} catch (error) {
 		console.error('Error saving post:', error);
-		throw error;
+		return (error as any).message;
 	}
 }
 
@@ -46,10 +39,16 @@ export async function uploadImage(file: File, path: string): Promise<string> {
 }
 export async function getPost(postId: string): Promise<Post | null> {
 	try {
+		console.log('finding post ' + postId);
 		const postRef = doc(db, 'posts', postId);
 		const docSnap = await getDoc(postRef);
 		if (docSnap.exists()) {
-			return docSnap.data() as Post;
+			const data = docSnap.data()
+			return {
+				...data,
+				createdAt: data.createdAt.toDate(),
+				updatedAt: data.updatedAt.toDate()
+			} as Post;
 		} else {
 			return null;
 		}
@@ -69,4 +68,16 @@ export async function togglePublish(id: string, publish: boolean) {
 		console.error('Error publishing post', error);
 		throw err;
 	}
+}
+
+export function formatDate(date: Date): string {
+	return new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' }).format(date);
+}
+
+function generateSlug(title: string) {
+	return title
+		.toLowerCase()
+		.replace(/[^\w\s-]/g, '') // Remove special characters
+		.replace(/\s+/g, '-') // Replace spaces with hyphens
+		.trim();
 }
