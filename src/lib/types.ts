@@ -1,4 +1,3 @@
-import type { Timestamp } from 'firebase/firestore';
 
 export interface SEO {
 	title: string;
@@ -22,7 +21,7 @@ export type Post = {
 	author: string;
 	categories: string[];
 	tags: string[];
-	featuredImage: string;
+	featuredImage?: string;
 	excerpt: string;
 	seo: SEO;
 }

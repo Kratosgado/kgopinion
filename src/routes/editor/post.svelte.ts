@@ -1,6 +1,5 @@
 import { auth } from '$lib/firebase';
 import type { Post } from '$lib/types';
-import { Timestamp } from 'firebase/firestore';
 
 // Form state
 export const post: Post = $state({
@@ -10,13 +9,14 @@ export const post: Post = $state({
 	published: false,
 	author: auth.currentUser?.uid || '',
 	categories: [],
-	featuredImage: '',
+  tags: [],
+	featuredImage: undefined,
 	excerpt: '',
 	seo: {
 		title: '',
 		description: '',
 		keywords: []
 	},
-	createdAt: Timestamp.now(),
-	updatedAt: Timestamp.now()
+	createdAt: new Date(),
+	updatedAt: new Date()
 });

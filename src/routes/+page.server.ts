@@ -1,13 +1,11 @@
 import { db } from '$lib/firebase';
-import type { Post } from '$lib/types';
 import {
 	collection,
-	query,
-	orderBy,
 	getDocs,
-	QueryDocumentSnapshot,
 	limit,
-	Timestamp
+	orderBy,
+	query,
+	QueryDocumentSnapshot
 } from 'firebase/firestore';
 
 export const load = async () => {

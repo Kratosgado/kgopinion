@@ -1,8 +1,13 @@
-import { collection, addDoc, serverTimestamp, doc, setDoc, getDoc } from 'firebase/firestore';
+
+🌼   daisyUI 4.12.23
+├─ ✔︎ 1 theme added		https://daisyui.com/docs/themes
+╰─ ❤︎ Support daisyUI project:	https://opencollective.com/daisyui
+
 import { db, storage } from '$lib/firebase';
 import type { Post } from '$lib/types';
 import { error } from '@sveltejs/kit';
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { doc, getDoc, serverTimestamp, setDoc } from 'firebase/firestore';
+import { getDownloadURL, ref, ref, uploadBytes } from 'firebase/storage';
 
 export async function savePostOrUpdate(post: Post): Promise<string> {
 	try {
@@ -37,13 +42,23 @@ export async function uploadImage(file: File, path: string): Promise<string> {
 		throw error;
 	}
 }
+
+export async function deleteImage(url: string) {
+	try {
+		//TODO: delete image
+	} catch (error) {
+		console.error('Error uploading image:', error);
+		throw error;
+	}
+}
+
 export async function getPost(postId: string): Promise<Post | null> {
 	try {
 		console.log('finding post ' + postId);
 		const postRef = doc(db, 'posts', postId);
 		const docSnap = await getDoc(postRef);
 		if (docSnap.exists()) {
-			const data = docSnap.data()
+			const data = docSnap.data();
 			return {
 				...data,
 				createdAt: data.createdAt.toDate(),

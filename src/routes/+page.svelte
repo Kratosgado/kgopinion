@@ -1,4 +1,3 @@
-<!-- src/routes/+page.svelte -->
 <script lang="ts">
 	import type { Post } from '$lib/types';
 	import { formatDate } from '$lib/utils';
@@ -13,15 +12,15 @@
 			Explore programming and science topics in an engaging and informative way.
 		</p>
 		<a
-			href="/posts"
-			class="rounded-md bg-white px-4 py-2 text-indigo-500 hover:bg-indigo-500 hover:text-white"
+			href="/blog"
+			class="btn bg-white px-4 py-2 text-indigo-500 hover:bg-indigo-500 hover:text-white"
 		>
 			View All Posts
 		</a>
 	</div>
 </section>
 
-<section class="recent-posts my-16">
+<section class="rcent-posts my-16">
 	<div class="container mx-auto">
 		<h2 class="mb-8 text-3xl font-bold">Recent Posts</h2>
 		<ul class="grid grid-cols-1 gap-8 md:grid-cols-3">
