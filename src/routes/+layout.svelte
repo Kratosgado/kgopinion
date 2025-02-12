@@ -3,15 +3,15 @@
 	import '../app.css';
 	import NavBar from '$lib/components/NavBar.svelte';
 	import { onDestroy } from 'svelte';
-	import { subscribeToAuthState } from '$lib/auth';
+	// import { subscribeToAuthState } from '$lib/auth';
 
 	let user: any = null;
 
-	const unsubscribe = subscribeToAuthState((u) => {
-		user = u;
-	});
-
-	onDestroy(() => unsubscribe());
+	// const unsubscribe = subscribeToAuthState((u) => {
+	// 	user = u;
+	// });
+	//
+	// onDestroy(() => unsubscribe());
 </script>
 
 <NavBar />

@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { onDestroy } from 'svelte';
-	import { subscribeToAuthState } from '../auth';
+	// import { subscribeToAuthState } from '../auth';
 
 	let user: any = null;
 
-	const unsubscribe = subscribeToAuthState((u) => {
-		user = u;
-	});
-
-	onDestroy(() => unsubscribe());
+	// const unsubscribe = subscribeToAuthState((u) => {
+	// 	user = u;
+	// });
+	//
+	// onDestroy(() => unsubscribe());
 </script>
 
 <header class="navbar bg-base-100">
@@ -31,12 +31,12 @@
 				</svg>
 			</div>
 			<ul
-				tabindex="0"
+				tabindex="-1"
 				class="menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 shadow"
 			>
-				<li><a>Homepage</a></li>
-				<li><a>Portfolio</a></li>
-				<li><a>About</a></li>
+				<li><a href="/">Homepage</a></li>
+				<li><a href="/portfolio">Portfolio</a></li>
+				<li><a href="/about">About</a></li>
 			</ul>
 		</div>
 	</div>
