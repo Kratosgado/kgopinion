@@ -1,13 +1,26 @@
 <script lang="ts">
 	import PostOverview from '$lib/components/PostOverview.svelte';
 	import type { Post } from '$lib/types';
+	import SEO from '$lib/seo/Head.svelte';
+	import type { SEOMetadata } from '$lib/seo';
 
 	export let data: { posts: Post[] };
+
+	const metadata: SEOMetadata = {
+		title: 'Kgopinion',
+		description: 'Explore programming and science topics in an engaging and informative way',
+		keywords: ['programming', 'science', 'development', 'software', 'technology'],
+		type: 'website',
+		ogImage: '../../static/favicon.png',
+		author: 'Kratosgado'
+	};
 </script>
+
+<SEO {metadata} />
 
 <section class="hero w-auto bg-gradient-to-r from-indigo-500 to-purple-500 py-16 text-white">
 	<div class="container mx-auto text-center">
-		<h1 class="mb-4 text-4xl font-bold">Welcome to My Blog</h1>
+		<h1 class="mb-4 text-4xl font-bold">Welcome to Kgopinion</h1>
 		<p class="mb-8 text-lg">
 			Explore programming and science topics in an engaging and informative way.
 		</p>

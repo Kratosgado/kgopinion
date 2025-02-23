@@ -1,6 +1,5 @@
 import { Query } from "$lib/backend";
-import { db } from "$lib/firebase";
-import { Post } from "$lib/types";
+import type { Post } from "$lib/types";
 
 export const load = async () => {
   try {

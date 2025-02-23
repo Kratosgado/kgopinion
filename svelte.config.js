@@ -24,7 +24,9 @@ const config = {
         persist: false,
       },
     }),
-    inlineStyleThreshold: Infinity
+    prerender: {
+      entries: ["*"],
+    }
   },
 };
 

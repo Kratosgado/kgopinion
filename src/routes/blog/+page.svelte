@@ -1,6 +1,7 @@
 <!-- src/routes/PostView.svelte -->
 <script lang="ts">
 	import type { Post } from '$lib/types';
+	import { formatDate } from '$lib/utils';
 
 	export let post: Post;
 </script>

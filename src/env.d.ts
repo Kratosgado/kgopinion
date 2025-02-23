@@ -1,4 +1,5 @@
 interface ImportMetaEnv {
+  PUBLIC_SITE_URL: string;
   VITE_FIREBASE_API_KEY: string;
   VITE_FIREBASE_AUTH_DOMAIN: string;
   VITE_FIREBASE_PROJECT_ID: string;

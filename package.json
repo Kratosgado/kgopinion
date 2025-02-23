@@ -70,6 +70,7 @@
 		"lowlight": "^3.3.0",
 		"svelte-tiptap": "^2.1.0",
 		"sveltefire": "^0.4.5",
-		"tiptap": "^1.32.2"
+		"tiptap": "^1.32.2",
+		"vite-plugin-tailwind-purgecss": "^0.3.5"
 	}
 }

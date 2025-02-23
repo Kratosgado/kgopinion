@@ -1,9 +1,24 @@
 <script lang="ts">
+	import type { SEOMetadata } from '$lib/seo';
+	import SEO from '$lib/seo/Head.svelte';
 	import type { Post } from '../../../lib/types';
 	import { formatDate } from '../../../lib/utils';
 
 	export let data: { post: Post };
+	const { post } = data;
+	const metadata: SEOMetadata = {
+		title: post.title,
+		description: post.excerpt,
+		keywords: post.tags || [],
+		type: 'article',
+		ogImage: post.featuredImage,
+		publishedTime: post.createdAt.toUTCString(),
+		modifiedTime: post.updatedAt.toUTCString(),
+		author: post.author
+	};
 </script>
+
+<SEO {metadata} />
 
 <article class="container mx-auto p-4">
 	<div class="card bg-base-100 shadow-xl">
@@ -20,7 +35,7 @@
 				<span>{formatDate(data.post.createdAt)}</span>
 			</div>
 			<div class="prose mt-4 max-w-none">
-				{@html data.post.content}
+				{@html post.content}
 			</div>
 			{#if data.post.categories.length}
 				<div class="mt-4">
