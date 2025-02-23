@@ -1,6 +1,6 @@
 <script lang="ts">
+	import PostOverview from '$lib/components/PostOverview.svelte';
 	import type { Post } from '$lib/types';
-	import { formatDate } from '$lib/utils';
 
 	export let data: { posts: Post[] };
 </script>
@@ -25,10 +25,8 @@
 		<h2 class="mb-8 text-3xl font-bold">Recent Posts</h2>
 		<ul class="grid grid-cols-1 gap-8 md:grid-cols-3">
 			{#each data.posts as post}
-				<li class="rounded-md bg-white p-6 shadow-md">
-					<h3 class="mb-2 text-xl font-bold"><a href={`/blog/${post.slug}`}>{post.title}</a></h3>
-					<p class="mb-4 text-gray-600">{post.excerpt}</p>
-					<p class="text-sm text-gray-500">{formatDate(post.createdAt)}</p>
+				<li class="rounded-md bg-current p-6 shadow-md">
+					<PostOverview {post} />
 				</li>
 			{/each}
 		</ul>

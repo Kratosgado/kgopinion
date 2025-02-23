@@ -24,6 +24,7 @@ const config = {
         persist: false,
       },
     }),
+    inlineStyleThreshold: Infinity
   },
 };
 
