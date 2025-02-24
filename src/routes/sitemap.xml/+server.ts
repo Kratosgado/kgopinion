@@ -2,6 +2,7 @@
 import { PUBLIC_SITE_URL } from '$env/static/public';
 import { Query } from '$lib/backend';
 import type { Post } from '$lib/types';
+import { formatDate } from '$lib/utils';
 
 // Helper function to escape XML special characters
 function escapeXml(unsafe: string): string {
@@ -45,7 +46,7 @@ export async function GET() {
     </url>
     ${posts.map(post => `    <url>
         <loc>${formatUrl(`${PUBLIC_SITE_URL}/blog/${post.slug}`)}</loc>
-        <lastmod>${post.updatedAt}</lastmod>
+        <lastmod>${formatDate(post.updatedAt)}</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>${post.featuredImage ? `
         <image:image>
