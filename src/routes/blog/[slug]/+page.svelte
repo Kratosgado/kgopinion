@@ -21,7 +21,7 @@
 <SEO {metadata} />
 
 <article class="container mx-auto p-4">
-	<div class="card bg-base-100 shadow-xl">
+	<div class="card bg-base-300 shadow-xl">
 		{#if data.post.featuredImage}
 			<figure>
 				<img src={data.post.featuredImage} alt={data.post.title} class="h-64 w-full object-cover" />

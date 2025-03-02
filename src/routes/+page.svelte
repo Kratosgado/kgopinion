@@ -33,6 +33,15 @@
 	</div>
 </section>
 
+<div class="mockup-code w-full">
+	<pre data-prefix="$"><code>npm i daisyui</code></pre>
+</div>
+<div class="mockup-code w-full">
+	<pre data-prefix="$"><code>npm i daisyui</code></pre>
+	<pre data-prefix=">" class="text-warning"><code>installing...</code></pre>
+	<pre data-prefix=">" class="text-success"><code>Done!</code></pre>
+</div>
+
 <section class="rcent-posts my-16">
 	<div class="container mx-auto">
 		<h2 class="mb-8 text-3xl font-bold">Recent Posts</h2>

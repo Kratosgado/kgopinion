@@ -7,7 +7,7 @@
 	$inspect(showPreview);
 </script>
 
-<div class="min-h-screen bg-base-200 p-4">
+<div class="min-h-screen bg-base-300 p-4">
 	<div class="flex flex-row gap-4">
 		<!-- <Elements /> -->
 		{#if showPreview}

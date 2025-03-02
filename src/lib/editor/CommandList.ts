@@ -1,3 +1,4 @@
+import { handleImageUpload } from '$lib/utils/imageUpload';
 import type { Editor } from '@tiptap/core';
 import Suggestion from '@tiptap/suggestion';
 
@@ -106,11 +107,13 @@ export const suggestions = (editor: Editor) => Suggestion({
     return commands.filter((item) => item.title.toLowerCase().includes(query.toLowerCase()));
   },
   render: () => {
-    let popup: HTMLElement;
-    let items: HTMLElement[];
+    let popup: HTMLUListElement;
+    let items: HTMLLIElement[];
     let selectedIndex = 0;
 
     const onKeyDown = (event: KeyboardEvent) => {
+
+      console.info(event.key);
       if (event.key === 'ArrowUp') {
         selectedIndex = (selectedIndex - 1 + items.length) % items.length;
         updateSelection();
@@ -123,7 +126,7 @@ export const suggestions = (editor: Editor) => Suggestion({
         event.preventDefault();
       }
 
-      if (event.key === 'Enter') {
+      if (event.key === 'Tab') {
         items[selectedIndex]?.click();
         event.preventDefault();
       }
@@ -131,49 +134,42 @@ export const suggestions = (editor: Editor) => Suggestion({
 
     const updateSelection = () => {
       items.forEach((item, index) => {
+        const a = item.getElementsByTagName('a')
         if (index === selectedIndex) {
-          item.classList.add('bg-gray-200');
+          a[0].classList.add('focus');
         } else {
-          item.classList.remove('bg-gray-200');
+          a[0].classList.remove('focus');
         }
       });
     };
 
     return {
       onStart: (props) => {
-        popup = document.createElement('div');
+        popup = document.createElement('ul');
         popup.classList.add(
           'absolute',
           'z-50',
-          'bg-white',
-          'shadow-xl',
-          'rounded-md',
-          'py-1',
-          'overflow-hidden'
+          'menu', 'bg-base-200', 'rounded-box', 'w-56',
+          'shadow-xl', 'rounded-md',
         );
         popup.style.minWidth = '180px';
 
         items = props.items.map((item, index) => {
-          const button = document.createElement('button');
-          button.classList.add(
-            'block',
-            'w-full',
-            'px-4',
-            'py-2',
-            'text-left',
-            'hover:bg-gray-200'
-          );
-          button.textContent = item.title;
-          button.addEventListener('click', () => {
+          const li = document.createElement('li');
+          const a = document.createElement('a');
+          a.textContent = item.title;
+          // button.textContent = item.title;
+          li.addEventListener('click', () => {
             item.command(props);
             props.editor.commands.focus();
           });
 
           if (index === selectedIndex) {
-            button.classList.add('bg-gray-200');
+            a.classList.add('focus')
           }
 
-          return button;
+          li.appendChild(a);
+          return li;
         });
 
         items.forEach((item) => popup.appendChild(item));
@@ -198,26 +194,20 @@ export const suggestions = (editor: Editor) => Suggestion({
         }
 
         items = props.items.map((item, index) => {
-          const button = document.createElement('button');
-          button.classList.add(
-            'block',
-            'w-full',
-            'px-4',
-            'py-2',
-            'text-left',
-            'hover:bg-gray-200'
-          );
-          button.textContent = item.title;
-          button.addEventListener('click', () => {
+          const li = document.createElement('li');
+          li.addEventListener('click', () => {
             item.command(props);
             props.editor.commands.focus();
           });
 
+          const a = document.createElement('a')
+          a.textContent = item.title;
           if (index === selectedIndex) {
-            button.classList.add('bg-gray-200');
+            a.classList.add('focus');
           }
+          li.appendChild(a);
 
-          return button;
+          return li;
         });
 
         items.forEach((item) => popup.appendChild(item));

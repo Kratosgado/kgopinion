@@ -10,7 +10,6 @@
 	import TextStyle from '@tiptap/extension-text-style';
 	import FontFamily from '@tiptap/extension-font-family';
 	import Highlight from '@tiptap/extension-highlight';
-	import HorizontalRule from '@tiptap/extension-horizontal-rule';
 	import * as TImage from '@tiptap/extension-image';
 	import Link from '@tiptap/extension-link';
 	import TaskList from '@tiptap/extension-task-list';
@@ -28,20 +27,6 @@
 	import Focus from '@tiptap/extension-focus';
 	import Dropcursor from '@tiptap/extension-dropcursor';
 	import ListItem from '@tiptap/extension-list-item';
-
-	// Pro extensions (assuming you have access to them)
-	// import Details from '@tiptap-pro/extension-details';
-	// import DetailsContent from '@tiptap-pro/extension-details-content';
-	// import DetailsSummary from '@tiptap-pro/extension-details-summary';
-	// import DragHandle from '@tiptap-pro/extension-drag-handle';
-	// import Emoji from '@tiptap-pro/extension-emoji';
-	// import FileHandler from '@tiptap-pro/extension-file-handler';
-	// import Mathematics from '@tiptap-pro/extension-mathematics';
-	// import NodeRange from '@tiptap-pro/extension-node-range';
-	// import TableOfContents from '@tiptap-pro/extension-table-of-contents';
-	// import UniqueID from '@tiptap-pro/extension-unique-id';
-	//
-	// Command menu suggestion
 
 	// Lowlight for code highlighting
 	import { all, createLowlight } from 'lowlight';
@@ -63,74 +48,6 @@
 	lowlight.register('css', css);
 	lowlight.register('js', js);
 	lowlight.register('ts', ts);
-	// Function to handle image upload and convert to WebP
-	async function handleImageUpload(
-		file: File,
-		editor: Editor,
-		range?: { from: number; to: number }
-	) {
-		// Create a FileReader to read the file
-		const reader = new FileReader();
-
-		reader.onload = async (event) => {
-			const img = new Image();
-			img.onload = async () => {
-				// Create canvas for WebP conversion
-				const canvas = document.createElement('canvas');
-				canvas.width = img.width;
-				canvas.height = img.height;
-
-				const ctx = canvas.getContext('2d');
-				ctx?.drawImage(img, 0, 0);
-
-				// Convert to WebP format with 0.8 quality
-				const webpDataUrl = canvas.toDataURL('image/webp', 0.8);
-
-				// Example of uploading to your server - replace with your actual API
-				// const response = await fetch('/api/upload-image', {
-				//   method: 'POST',
-				//   body: JSON.stringify({ image: webpDataUrl }),
-				//   headers: {
-				//     'Content-Type': 'application/json'
-				//   }
-				// });
-				// const { imageUrl } = await response.json();
-
-				// For now, we'll just use the data URL
-				// In production, you'd use the uploaded URL from your server
-				const imageUrl = webpDataUrl;
-
-				// Insert the image at cursor position or the range position if provided
-				if (range) {
-					editor.chain().focus().deleteRange(range).setImage({ src: imageUrl }).run();
-				} else {
-					editor.chain().focus().setImage({ src: imageUrl }).run();
-				}
-			};
-
-			if (event.target?.result) {
-				img.src = event.target.result as string;
-			}
-		};
-
-		reader.readAsDataURL(file);
-	}
-
-	// Image drop handler
-	function handleDrop(event: DragEvent, editor: Editor) {
-		if (event.dataTransfer?.files.length) {
-			const files = event.dataTransfer.files;
-			for (let i = 0; i < files.length; i++) {
-				const file = files[i];
-				if (file.type.startsWith('image/')) {
-					event.preventDefault();
-					handleImageUpload(file, editor);
-					return true;
-				}
-			}
-		}
-		return false;
-	}
 
 	// Initialize editor on mount
 	onMount(() => {
@@ -251,7 +168,9 @@
 
 	{#if editor}
 		<div class="editor-info mt-2 text-sm text-gray-500">
-			<p>Type <kbd>/</kbd> for commands</p>
+			<span>Type <kbd>/</kbd> for commands</span>
+			|
+			<span>Use <kbd>Tab</kbd> to select highlighted command</span>
 		</div>
 	{/if}
 </div>
