@@ -8,7 +8,7 @@
 </script>
 
 <div class="min-h-screen bg-base-300 p-4">
-	<div class="flex flex-row gap-4">
+	<div class="flex flex-row justify-center gap-4">
 		<!-- <Elements /> -->
 		{#if showPreview}
 			<Preview togglePreview={() => (showPreview = !showPreview)} />

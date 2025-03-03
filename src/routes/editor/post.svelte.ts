@@ -3,20 +3,15 @@ import type { Post } from '$lib/types';
 
 // Form state
 export const post: Post = $state({
-	title: 'Untitled Blog',
-	content: 'What is on your ming.',
-	slug: '',
-	published: false,
-	author: auth.currentUser?.uid || '',
-	categories: [],
-  tags: [],
-	featuredImage: undefined,
-	excerpt: '',
-	seo: {
-		title: '',
-		description: '',
-		keywords: []
-	},
-	createdAt: new Date(),
-	updatedAt: new Date()
+  title: 'Untitled Blog',
+  content: 'What is on your mind.',
+  slug: '',
+  published: false,
+  author: auth.currentUser?.uid || '',
+  categories: [],
+  keywords: [],
+  featuredImage: undefined,
+  excerpt: '',
+  createdAt: new Date(),
+  updatedAt: new Date()
 });

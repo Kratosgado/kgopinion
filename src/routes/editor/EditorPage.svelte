@@ -37,6 +37,7 @@
 
 	import { post } from './post.svelte';
 	import SlashCommands from '$lib/editor/SlashCommands';
+	import { handleImageUpload } from '$lib/utils/imageUpload';
 
 	let element: HTMLDivElement;
 	let editor: Editor;
@@ -174,8 +175,6 @@
 		</div>
 	{/if}
 </div>
-
-<!-- <div bind:this={element} class="prose max-w-none"></div> -->
 
 <style>
 	.editor-container {
