@@ -18,8 +18,6 @@
 	import Underline from '@tiptap/extension-underline';
 	import Subscript from '@tiptap/extension-subscript';
 	import Superscript from '@tiptap/extension-superscript';
-	import Table from '@tiptap/extension-table';
-	import TableRow from '@tiptap/extension-table-row';
 	import TableHeader from '@tiptap/extension-table-header';
 	import CharacterCount from '@tiptap/extension-character-count';
 	import Placeholder from '@tiptap/extension-placeholder';
@@ -68,7 +66,7 @@
 				}),
 				CodeBlockLowlight.configure({ lowlight }),
 				Color.configure({ types: [TextStyle.name, ListItem.name] }),
-				TextStyle.configure({ types: [ListItem.name] }),
+				// TextStyle.configure({ types: [ListItem.name] }),
 				FontFamily,
 				Highlight,
 				TImage.Image.configure({

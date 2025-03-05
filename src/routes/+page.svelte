@@ -35,7 +35,7 @@
 
 <div class="flex min-h-screen flex-col">
 	<!-- Hero Section -->
-	<div class="hero min-h-[60vh] bg-base-200">
+	<div class="hero min-h-[35vh]  bg-base-200">
 		<div class="hero-content text-center">
 			<div class="max-w-md">
 				<h1 class="text-5xl font-bold">Welcome to KgOpinion</h1>
