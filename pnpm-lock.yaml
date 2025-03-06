@@ -143,6 +143,9 @@ importers:
       lowlight:
         specifier: ^3.3.0
         version: 3.3.0
+      prosemirror-state:
+        specifier: ^1.4.3
+        version: 1.4.3
       svelte-highlight:
         specifier: ^7.8.2
         version: 7.8.2

@@ -1,2 +1,2 @@
-export * from "./query";
-export type Collection = "posts" | "users";
+export * from './query';
+export type Collection = 'posts' | 'users';

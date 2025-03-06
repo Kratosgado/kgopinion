@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 
 	// In a real app, you would fetch this data based on the slug
 	// For this example, we'll use a static object
@@ -120,7 +120,7 @@ module.exports = {
 	};
 
 	// Get the current slug from the URL
-	const slug = $page.params.slug;
+	const slug = page.params.slug;
 
 	// Related posts (in a real app, these would be dynamically generated)
 	const relatedPosts = Object.entries(posts)
@@ -150,7 +150,8 @@ module.exports = {
 	};
 </script>
 
-<SEO {metadata} />{#if post}
+<SEO {metadata} />
+{#if post}
 	<!-- Post Header -->
 	<div class="relative h-[40vh] w-full">
 		<img

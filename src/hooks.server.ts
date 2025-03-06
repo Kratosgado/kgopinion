@@ -2,11 +2,11 @@ import { auth } from '$lib/firebase';
 import type { Handle } from '@sveltejs/kit';
 
 export const handle: Handle = async ({ event, resolve }) => {
-  // Get the current user from Firebase Auth
-  const user = await auth.currentUser;
+	// Get the current user from Firebase Auth
+	const user = await auth.currentUser;
 
-  // Add the user to the locals object for global access
-  event.locals.user = user;
+	// Add the user to the locals object for global access
+	event.locals.user = user;
 
-  return resolve(event);
+	return resolve(event);
 };

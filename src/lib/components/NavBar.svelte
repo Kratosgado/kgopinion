@@ -9,7 +9,7 @@
 			<ul class="menu menu-horizontal px-1">
 				<li><a href="/" class="font-medium">Home</a></li>
 				<li><a href="/articles" class="font-medium">Articles</a></li>
-				<li><a href="/categories" class="font-medium">Categories</a></li>
+				<li><a href="/articles/categories" class="font-medium">Categories</a></li>
 				<li><a href="/about" class="font-medium">About</a></li>
 				<li><a href="/contact" class="font-medium">Contact</a></li>
 			</ul>

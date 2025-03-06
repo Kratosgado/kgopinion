@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import type { SEOMetadata } from '.';
 
 	export let metadata: SEOMetadata;
 
 	const defaultMetadata: SEOMetadata = {
 		type: 'website',
-		canonicalUrl: $page.url.href,
+		canonicalUrl: page.url.href,
 		title: '',
 		description: '',
 		keywords: []

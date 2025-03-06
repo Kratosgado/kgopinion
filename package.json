@@ -93,6 +93,7 @@
     "firebase-admin": "^13.1.0",
     "highlight.js": "^11.11.1",
     "lowlight": "^3.3.0",
+    "prosemirror-state": "^1.4.3",
     "svelte-highlight": "^7.8.2",
     "svelte-tiptap": "^2.1.0",
     "sveltefire": "^0.4.5",
