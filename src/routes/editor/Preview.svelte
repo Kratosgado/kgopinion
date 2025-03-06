@@ -1,7 +1,10 @@
 <script lang="ts">
 	import { post } from './post.svelte.ts';
-	import PostView from '../blog/+page.svelte';
+	import PostView from '../articles/[slug]/+page.svelte';
 	let { togglePreview }: { togglePreview: () => void } = $props();
+  const data = {
+    post: post
+  }
 </script>
 
 <div class="flex w-full flex-col p-4">
@@ -28,5 +31,5 @@
 			</svg>
 		</button>
 	</div>
-	<PostView {post} />
+	<PostView {data} />
 </div>
