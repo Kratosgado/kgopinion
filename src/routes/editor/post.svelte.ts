@@ -1,5 +1,4 @@
-import { auth } from '$lib/firebase';
-import type { Post } from '$lib/types';
+import { type Post, auth } from '$lib';
 
 // Form state
 export const post: Post = $state({

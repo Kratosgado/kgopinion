@@ -83,6 +83,7 @@
     "@tiptap/extension-text-style": "^2.11.5",
     "@tiptap/extension-typography": "^2.11.5",
     "@tiptap/extension-underline": "^2.11.5",
+    "@tiptap/extension-youtube": "^2.11.5",
     "@tiptap/pm": "^2.11.5",
     "@tiptap/starter-kit": "^2.11.5",
     "@tiptap/suggestion": "^2.11.5",
@@ -93,10 +94,13 @@
     "firebase-admin": "^13.1.0",
     "highlight.js": "^11.11.1",
     "lowlight": "^3.3.0",
+    "lucide-svelte": "^0.479.0",
+    "marked": "^15.0.7",
     "prosemirror-state": "^1.4.3",
     "svelte-highlight": "^7.8.2",
     "svelte-tiptap": "^2.1.0",
     "sveltefire": "^0.4.5",
+    "tippy.js": "^6.3.7",
     "tiptap": "^1.32.2",
     "vite-plugin-tailwind-purgecss": "^0.3.5"
   }

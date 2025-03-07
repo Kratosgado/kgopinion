@@ -1,4 +1,4 @@
-import { auth } from '$lib/firebase';
+import { auth } from '$lib';
 import type { Handle } from '@sveltejs/kit';
 
 export const handle: Handle = async ({ event, resolve }) => {

@@ -1,5 +1,4 @@
-import { Query } from '$lib/backend';
-import type { Post } from '$lib/types';
+import { Query, type Post } from '$lib';
 
 export const load = async () => {
 	try {

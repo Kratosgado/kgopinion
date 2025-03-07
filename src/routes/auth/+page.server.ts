@@ -1,6 +1,6 @@
 // src/routes/auth/+page.server.ts
 import { redirect } from '@sveltejs/kit';
-import { auth } from '$lib/firebase';
+import { auth } from '$lib';
 
 export const load = async ({ locals }) => {
 	// Check if the user is already authenticated
