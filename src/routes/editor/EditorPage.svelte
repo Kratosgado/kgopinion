@@ -1,27 +1,15 @@
 <script lang="ts">
 	import { onDestroy, onMount } from 'svelte';
 	import { Editor } from '@tiptap/core';
-	// Lowlight for code highlighting
-	import { all, createLowlight } from 'lowlight';
-	import css from 'highlight.js/lib/languages/css';
-	import html from 'highlight.js/lib/languages/xml';
-	import js from 'highlight.js/lib/languages/javascript';
-	import ts from 'highlight.js/lib/languages/typescript';
-
 	import { post } from './post.svelte';
 	import { handleImageUpload } from '$lib/utils/imageUpload';
-	import { extensions } from '$lib';
+	import { extensions, YoutubeModal } from '$lib';
+	import LinkModal from '$lib/editor/LinkModal.svelte';
+	import ImageModal from '$lib/editor/ImageModal.svelte';
 
 	let element: HTMLDivElement;
 	let editor: Editor;
 	let characterCount = 0;
-
-	// Setup lowlight for code highlighting
-	const lowlight = createLowlight(all);
-	lowlight.register('html', html);
-	lowlight.register('css', css);
-	lowlight.register('js', js);
-	lowlight.register('ts', ts);
 
 	// Initialize editor on mount
 	onMount(() => {
@@ -64,8 +52,6 @@
 	});
 </script>
 
-<!-- Simple floating menu for mobile that appears only when text is selected -->
-
 <div class="editor-container relative">
 	{#if editor}
 		<div class="character-count mb-2 text-sm text-gray-500">
@@ -83,6 +69,10 @@
 		</div>
 	{/if}
 </div>
+
+<YoutubeModal { editor }/>
+<LinkModal {editor} />
+<ImageModal {editor} />
 
 <style>
 	.editor-container {

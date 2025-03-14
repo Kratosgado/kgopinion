@@ -1,3 +1,5 @@
-export * from './NavBar.svelte';
-export * from './ThemeButton.svelte';
-export * from './PostOverview.svelte';
+export { default as Button } from './Button.svelte';
+export { default as NavBar } from './NavBar.svelte';
+export { default as Footer } from './Footer.svelte';
+export { default as ThemeButton } from './ThemeButton.svelte';
+export { default as PostOverview } from './PostOverview.svelte';

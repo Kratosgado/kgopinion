@@ -3,6 +3,7 @@
 
 	import { post } from './post.svelte';
 	import { deleteImage, savePostOrUpdate, togglePublish, uploadImage } from '../../lib/utils';
+	import { Button } from '$lib';
 
 	async function handleImageSelect(event: Event) {
 		const input = event.target as HTMLInputElement;
@@ -44,17 +45,9 @@
 <!-- Right Column - Post Details -->
 <div class="space-y-4 rounded-box bg-base-100 p-4 shadow-lg">
 	<div class="flex gap-2">
-		<button onclick={() => togglePreview()} class="btn btn-primary flex-1"> Preview </button>
-		<button onclick={() => savePostOrUpdate(post)} class="btn btn-success flex-1">
-			Save Draft
-		</button>
-		<button
-			onclick={() => togglePublish(post.slug!, true)}
-			disabled={post.slug.length === 0}
-			class="btn btn-accent flex-1"
-		>
-			Publish
-		</button>
+    <Button title="Preview" cb={togglePreview} class="btn-primary" />
+    <Button title="Save Draft" cb={() => savePostOrUpdate(post)} />
+    <Button title="Publish" cb={() => togglePublish(post.slug!, true)} class="btn-secondary"/>
 	</div>
 	<div class="divider"></div>
 	<h2 class="text-lg font-bold">Post Details</h2>
@@ -82,47 +75,55 @@
 			class="file-input file-input-bordered w-full"
 		/>
 
-		<label for="" class="label">Categories</label>
-		<div class="mb-2 flex flex-wrap gap-2">
-			{#each post.categories as category}
-				<span class="mr-2 rounded bg-blue-100 px-2.5 py-0.5 text-sm font-medium text-blue-800">
-					{category}
-					<button
-						onclick={() => removeCategory(category)}
-						class="ml-1 text-blue-600 hover:text-blue-800">×</button
-					>
-				</span>
-			{/each}
-		</div>
-		<input
-			type="text"
-			bind:value={newCategory}
+
+   <!-- Tags -->
+    <div class="form-control w-full">
+      <label for=""class="label">
+        <span class="label-text text-lg font-bold">Categories</span>
+      </label>
+      <div class="flex flex-wrap gap-2 mb-2">
+        {#each post.categories as cat}
+          <div class="badge badge-primary gap-1">
+            {cat}
+            <button onclick={() => removeCategory(cat)} class="btn btn-xs btn-circle">×</button>
+          </div>
+        {/each}
+      </div>
+      <div class="join w-full">
+        <input 
+          type="text" 
+          bind:value={newCategory} 
 			onkeydown={(e) => handleKeyDown(e, addCategory)}
-			placeholder="Add a category"
-			class="input input-bordered mb-4"
-		/>
+          placeholder="Add a tag" 
+          class="input input-bordered join-item w-full"
+        />
+      </div>
+    </div> 
 
-		<label for="keywords" class="label">Keywords</label>
-		<div class="mb-2 flex flex-wrap gap-2">
-			{#each post.keywords as keyword}
-				<span class="mr-2 rounded bg-green-100 px-2.5 py-0.5 text-sm font-medium text-green-800">
-					{keyword}
-					<button
-						onclick={() => removeKeyword(keyword)}
-						class="ml-1 text-green-600 hover:text-green-800">×</button
-					>
-				</span>
-			{/each}
-		</div>
-		<input
-			type="text"
-			id="keywords"
-			bind:value={newKeyword}
+   <!-- Tags -->
+    <div class="form-control w-full">
+      <label for=""class="label">
+        <span class="label-text text-lg font-bold">Keywords</span>
+      </label>
+      <div class="flex flex-wrap gap-2 mb-2">
+        {#each post.keywords as key}
+          <div class="badge badge-primary gap-1">
+            {key}
+            <button onclick={() => removeKeyword(key)} class="btn btn-xs btn-circle">×</button>
+          </div>
+        {/each}
+      </div>
+      <div class="join w-full">
+        <input 
+          type="text" 
+          bind:value={newKeyword} 
 			onkeydown={(e) => handleKeyDown(e, addKeyword)}
-			placeholder="Add a keyword"
-			class="input input-bordered"
-		/>
-
+          placeholder="Add a tag" 
+          class="input input-bordered join-item w-full"
+        />
+      </div>
+    </div> 
+    
 		{#if post.featuredImage}
 			<div class="relative w-full">
 				<img

@@ -1,232 +1,259 @@
 import { handleImageUpload } from '$lib/utils/imageUpload';
-import type { Editor } from '@tiptap/core';
+import type { Editor, Range } from '@tiptap/core';
 import Suggestion from '@tiptap/suggestion';
+import { extra } from '../../routes/editor/extra.svelte';
 
 // Command suggestion configuration
-export const suggestions = (editor: Editor) => Suggestion({
-  editor: editor,
-  char: '/',
-  items: ({ query }) => {
-    const commands = [
-      {
-        title: 'Heading 1',
-        command: ({ editor, range }) => {
-          editor.chain().focus().deleteRange(range).setHeading({ level: 1 }).run();
-        }
-      },
-      {
-        title: 'Heading 2',
-        command: ({ editor, range }) => {
-          editor.chain().focus().deleteRange(range).setHeading({ level: 2 }).run();
-        }
-      },
-      {
-        title: 'Heading 3',
-        command: ({ editor, range }) => {
-          editor.chain().focus().deleteRange(range).setHeading({ level: 3 }).run();
-        }
-      },
-      {
-        title: 'Bullet List',
-        command: ({ editor, range }) => {
-          editor.chain().focus().deleteRange(range).toggleBulletList().run();
-        }
-      },
-      {
-        title: 'Numbered List',
-        command: ({ editor, range }) => {
-          editor.chain().focus().deleteRange(range).toggleOrderedList().run();
-        }
-      },
-      {
-        title: 'Task List',
-        command: ({ editor, range }) => {
-          editor.chain().focus().deleteRange(range).toggleTaskList().run();
-        }
-      },
-      {
-        title: 'Code Block',
-        command: ({ editor, range }) => {
-          editor.chain().focus().deleteRange(range).toggleCodeBlock().run();
-        }
-      },
-      {
-        title: 'Blockquote',
-        command: ({ editor, range }) => {
-          editor.chain().focus().deleteRange(range).toggleBlockquote().run();
-        }
-      },
-      {
-        title: 'Horizontal Rule',
-        command: ({ editor, range }) => {
-          editor.chain().focus().deleteRange(range).setHorizontalRule().run();
-        }
-      },
-      {
-        title: 'Table',
-        command: ({ editor, range }) => {
-          editor.chain().focus().deleteRange(range).insertTable({ rows: 3, cols: 3 }).run();
-        }
-      },
-      {
-        title: 'Image',
-        command: ({ editor, range }) => {
-          // Open a file picker dialog
-          const input = document.createElement('input');
-          input.type = 'file';
-          input.accept = 'image/*';
-          input.onchange = async () => {
-            if (input.files?.length) {
-              const file = input.files[0];
-              await handleImageUpload(file, editor, range);
-            }
-          };
-          input.click();
-        }
-      },
-      {
-        title: 'Mathematics',
-        command: ({ editor, range }) => {
-          editor.chain().focus().deleteRange(range).insertMathInline().run();
-        }
-      },
-      {
-        title: 'Emoji',
-        command: ({ editor, range }) => {
-          editor.chain().focus().deleteRange(range).insertEmoji({ emoji: '😀' }).run();
-        }
-      },
-      {
-        title: 'Details',
-        command: ({ editor, range }) => {
-          editor.chain().focus().deleteRange(range).insertDetails().run();
-        }
-      }
-    ];
+export const suggestions = (editor: Editor) =>
+	Suggestion({
+		editor: editor,
+		char: '/',
+		items: ({ query }) => {
+			const commands: {
+				title: string;
+				command: ({ editor, range }: { editor: Editor; range: Range }) => void;
+			}[] = [
+				{
+					title: 'Heading 1',
+					command: ({ editor, range }) => {
+						editor.chain().focus().deleteRange(range).setHeading({ level: 1 }).run();
+					}
+				},
+				{
+					title: 'Link',
+					command({ editor, __ }) {
+						const { from, to } = editor.state.selection;
+						extra.linkText = editor.state.doc.textBetween(from, to, ' ');
+						extra.showLinkModal = true;
+					}
+				},
+				{
+					title: 'Youtube Link',
+					command({ _, __ }) {
+						extra.showYoutubeModal = true;
+					}
+				},
+				{
+					title: 'Image',
+					command({ _, __ }) {
+						extra.showImageModal = true;
+					}
+				},
+				{
+					title: 'Heading 2',
+					command: ({ editor, range }) => {
+						editor.chain().focus().deleteRange(range).setHeading({ level: 2 }).run();
+					}
+				},
+				{
+					title: 'Heading 3',
+					command: ({ editor, range }) => {
+						editor.chain().focus().deleteRange(range).setHeading({ level: 3 }).run();
+					}
+				},
+				{
+					title: 'Bullet List',
+					command: ({ editor, range }) => {
+						editor.chain().focus().deleteRange(range).toggleBulletList().run();
+					}
+				},
+				{
+					title: 'Numbered List',
+					command: ({ editor, range }) => {
+						editor.chain().focus().deleteRange(range).toggleOrderedList().run();
+					}
+				},
+				{
+					title: 'Task List',
+					command: ({ editor, range }) => {
+						editor.chain().focus().deleteRange(range).toggleTaskList().run();
+					}
+				},
+				{
+					title: 'Code Block',
+					command: ({ editor, range }) => {
+						editor.chain().focus().deleteRange(range).toggleCodeBlock().run();
+					}
+				},
+				{
+					title: 'Blockquote',
+					command: ({ editor, range }) => {
+						editor.chain().focus().deleteRange(range).toggleBlockquote().run();
+					}
+				},
+				{
+					title: 'Horizontal Rule',
+					command: ({ editor, range }) => {
+						editor.chain().focus().deleteRange(range).setHorizontalRule().run();
+					}
+				},
+				{
+					title: 'Table',
+					command: ({ editor, range }) => {
+						editor.chain().focus().deleteRange(range).insertTable({ rows: 3, cols: 3 }).run();
+					}
+				},
+				{
+					title: 'Image',
+					command: ({ editor, range }) => {
+						// Open a file picker dialog
+						const input = document.createElement('input');
+						input.type = 'file';
+						input.accept = 'image/*';
+						input.onchange = async () => {
+							if (input.files?.length) {
+								const file = input.files[0];
+								await handleImageUpload(file, editor, range);
+							}
+						};
+						input.click();
+					}
+				},
+				{
+					title: 'Mathematics',
+					command: ({ editor, range }) => {
+						editor.chain().focus().deleteRange(range).insertMathInline().run();
+					}
+				},
+				{
+					title: 'Emoji',
+					command: ({ editor, range }) => {
+						editor.chain().focus().deleteRange(range).insertEmoji({ emoji: '😀' }).run();
+					}
+				},
+				{
+					title: 'Details',
+					command: ({ editor, range }) => {
+						editor.chain().focus().deleteRange(range).insertDetails().run();
+					}
+				}
+			];
 
-    return commands.filter((item) => item.title.toLowerCase().includes(query.toLowerCase()));
-  },
-  render: () => {
-    let popup: HTMLUListElement;
-    let items: HTMLLIElement[];
-    let selectedIndex = 0;
+			return commands.filter((item) => item.title.toLowerCase().includes(query.toLowerCase()));
+		},
+		render: () => {
+			let popup: HTMLUListElement;
+			let items: HTMLLIElement[];
+			let selectedIndex = 0;
 
-    const onKeyDown = (event: KeyboardEvent) => {
+			const onKeyDown = (event: KeyboardEvent) => {
+				console.info(event.key);
+				if (event.key === 'ArrowUp') {
+					selectedIndex = (selectedIndex - 1 + items.length) % items.length;
+					updateSelection();
+					event.preventDefault();
+				}
 
-      console.info(event.key);
-      if (event.key === 'ArrowUp') {
-        selectedIndex = (selectedIndex - 1 + items.length) % items.length;
-        updateSelection();
-        event.preventDefault();
-      }
+				if (event.key === 'ArrowDown') {
+					selectedIndex = (selectedIndex + 1) % items.length;
+					updateSelection();
+					event.preventDefault();
+				}
 
-      if (event.key === 'ArrowDown') {
-        selectedIndex = (selectedIndex + 1) % items.length;
-        updateSelection();
-        event.preventDefault();
-      }
+				if (event.key === 'Tab') {
+					items[selectedIndex]?.click();
+					event.preventDefault();
+				}
+			};
 
-      if (event.key === 'Tab') {
-        items[selectedIndex]?.click();
-        event.preventDefault();
-      }
-    };
+			const updateSelection = () => {
+				items.forEach((item, index) => {
+					const a = item.getElementsByTagName('a');
+					if (index === selectedIndex) {
+						a[0].classList.add('focus');
+					} else {
+						a[0].classList.remove('focus');
+					}
+				});
+			};
 
-    const updateSelection = () => {
-      items.forEach((item, index) => {
-        const a = item.getElementsByTagName('a')
-        if (index === selectedIndex) {
-          a[0].classList.add('focus');
-        } else {
-          a[0].classList.remove('focus');
-        }
-      });
-    };
+			return {
+				onStart: (props) => {
+					popup = document.createElement('ul');
+					popup.classList.add(
+						'absolute',
+						'z-50',
+						'menu',
+						'bg-base-200',
+						'rounded-box',
+						'w-56',
+						'shadow-xl',
+						'rounded-md'
+					);
+					popup.style.minWidth = '180px';
 
-    return {
-      onStart: (props) => {
-        popup = document.createElement('ul');
-        popup.classList.add(
-          'absolute',
-          'z-50',
-          'menu', 'bg-base-200', 'rounded-box', 'w-56',
-          'shadow-xl', 'rounded-md',
-        );
-        popup.style.minWidth = '180px';
+					items = props.items.map((item, index) => {
+						const li = document.createElement('li');
+						const a = document.createElement('a');
+						a.textContent = item.title;
+						// button.textContent = item.title;
+						li.addEventListener('click', () => {
+							item.command(props);
+							props.editor.commands.focus();
+						});
 
-        items = props.items.map((item, index) => {
-          const li = document.createElement('li');
-          const a = document.createElement('a');
-          a.textContent = item.title;
-          // button.textContent = item.title;
-          li.addEventListener('click', () => {
-            item.command(props);
-            props.editor.commands.focus();
-          });
+						if (index === selectedIndex) {
+							a.classList.add('focus');
+						}
 
-          if (index === selectedIndex) {
-            a.classList.add('focus')
-          }
+						li.appendChild(a);
+						return li;
+					});
 
-          li.appendChild(a);
-          return li;
-        });
+					items.forEach((item) => popup.appendChild(item));
 
-        items.forEach((item) => popup.appendChild(item));
+					document.body.appendChild(popup);
 
-        document.body.appendChild(popup);
+					const { left, bottom } = props.clientRect();
+					popup.style.left = `${left}px`;
+					popup.style.top = `${bottom}px`;
 
-        const { left, bottom } = props.clientRect();
-        popup.style.left = `${left}px`;
-        popup.style.top = `${bottom}px`;
+					document.addEventListener('keydown', onKeyDown);
+				},
 
-        document.addEventListener('keydown', onKeyDown);
-      },
+				onUpdate: (props) => {
+					const { left, bottom } = props.clientRect();
+					popup.style.left = `${left}px`;
+					popup.style.top = `${bottom}px`;
 
-      onUpdate: (props) => {
-        const { left, bottom } = props.clientRect();
-        popup.style.left = `${left}px`;
-        popup.style.top = `${bottom}px`;
+					// Update items
+					while (popup.firstChild) {
+						popup.removeChild(popup.firstChild);
+					}
 
-        // Update items
-        while (popup.firstChild) {
-          popup.removeChild(popup.firstChild);
-        }
+					items = props.items.map((item, index) => {
+						const li = document.createElement('li');
+						li.addEventListener('click', () => {
+							item.command(props);
+							props.editor.commands.focus();
+						});
 
-        items = props.items.map((item, index) => {
-          const li = document.createElement('li');
-          li.addEventListener('click', () => {
-            item.command(props);
-            props.editor.commands.focus();
-          });
+						const a = document.createElement('a');
+						a.textContent = item.title;
+						if (index === selectedIndex) {
+							a.classList.add('focus');
+						}
+						li.appendChild(a);
 
-          const a = document.createElement('a')
-          a.textContent = item.title;
-          if (index === selectedIndex) {
-            a.classList.add('focus');
-          }
-          li.appendChild(a);
+						return li;
+					});
 
-          return li;
-        });
+					items.forEach((item) => popup.appendChild(item));
+				},
 
-        items.forEach((item) => popup.appendChild(item));
-      },
+				onKeyDown: (props) => {
+					if (props.event.key === 'Escape') {
+						props.event.preventDefault();
+						return true;
+					}
 
-      onKeyDown: (props) => {
-        if (props.event.key === 'Escape') {
-          props.event.preventDefault();
-          return true;
-        }
+					return false;
+				},
 
-        return false;
-      },
-
-      onExit: () => {
-        popup.remove();
-        document.removeEventListener('keydown', onKeyDown);
-      }
-    };
-  }
-});
-
+				onExit: () => {
+					popup.remove();
+					document.removeEventListener('keydown', onKeyDown);
+				}
+			};
+		}
+	});
