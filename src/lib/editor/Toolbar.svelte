@@ -1,10 +1,9 @@
 <script lang="ts">
 	import type { Editor } from "@tiptap/core";
 	import type { Level } from "@tiptap/extension-heading";
+	import { BubbleMenu } from "svelte-tiptap";
 
   let {editor}: {editor: Editor } = $props()
-
-
 
     // Toolbar actions
   function toggleBold() {
@@ -36,9 +35,12 @@
   }
 
 </script>
-<div class="bg-base-200 p-2 rounded-t-lg flex flex-wrap gap-2">
+
+<BubbleMenu editor={editor}>
+  <div class="bg-base-200 p-2 rounded-t-lg flex flex-wrap gap-2">
         <div class="btn-group">
           <button 
+        aria-label="bold"
             class="btn btn-sm" 
             onclick={toggleBold} 
             class:btn-primary={editor?.isActive('bold')}
@@ -47,6 +49,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"></path><path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"></path></svg>
           </button>
           <button 
+        aria-label="bold"
             class="btn btn-sm" 
             onclick={toggleItalic} 
             class:btn-primary={editor?.isActive('italic')}
@@ -55,6 +58,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="4" x2="10" y2="4"></line><line x1="14" y1="20" x2="5" y2="20"></line><line x1="15" y1="4" x2="9" y2="20"></line></svg>
           </button>
           <button 
+        aria-label="bold"
             class="btn btn-sm" 
             onclick={toggleUnderline} 
             class:btn-primary={editor?.isActive('underline')}
@@ -93,6 +97,7 @@
 
         <div class="btn-group">
           <button 
+        aria-label="bold"
             class="btn btn-sm" 
             onclick={toggleBulletList} 
             class:btn-primary={editor?.isActive('bulletList')}
@@ -101,6 +106,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
           </button>
           <button 
+        aria-label="bold"
             class="btn btn-sm" 
             onclick={toggleOrderedList} 
             class:btn-primary={editor?.isActive('orderedList')}
@@ -112,6 +118,7 @@
 
         <div class="btn-group">
           <button 
+        aria-label="bold"
             class="btn btn-sm" 
             onclick={() => setTextAlign('left')} 
             class:btn-primary={editor?.isActive({ textAlign: 'left' })}
@@ -120,6 +127,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="17" y1="10" x2="3" y2="10"></line><line x1="21" y1="6" x2="3" y2="6"></line><line x1="21" y1="14" x2="3" y2="14"></line><line x1="17" y1="18" x2="3" y2="18"></line></svg>
           </button>
           <button 
+        aria-label="bold"
             class="btn btn-sm" 
             onclick={() => setTextAlign('center')} 
             class:btn-primary={editor?.isActive({ textAlign: 'center' })}
@@ -128,6 +136,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="10" x2="6" y2="10"></line><line x1="21" y1="6" x2="3" y2="6"></line><line x1="21" y1="14" x2="3" y2="14"></line><line x1="18" y1="18" x2="6" y2="18"></line></svg>
           </button>
           <button 
+        aria-label="bold"
             class="btn btn-sm" 
             onclick={() => setTextAlign('right')} 
             class:btn-primary={editor?.isActive({ textAlign: 'right' })}
@@ -139,3 +148,5 @@
       </div>
 
 </div>
+</BubbleMenu>
+

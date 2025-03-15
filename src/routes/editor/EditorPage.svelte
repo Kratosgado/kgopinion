@@ -2,10 +2,7 @@
 	import { onDestroy, onMount } from 'svelte';
 	import { Editor } from '@tiptap/core';
 	import { post } from './post.svelte';
-	import { handleImageUpload } from '$lib/utils/imageUpload';
-	import { extensions, YoutubeModal } from '$lib';
-	import LinkModal from '$lib/editor/LinkModal.svelte';
-	import ImageModal from '$lib/editor/ImageModal.svelte';
+	import { extensions,LinkModal, ImageModal, Toolbar, YoutubeModal } from '$lib';
 
 	let element: HTMLDivElement;
 	let editor: Editor;
@@ -22,27 +19,10 @@
 				characterCount = editor.storage.characterCount.characters();
 			},
 			onTransaction: () => {
-				// Force re-render so `editor.isActive` works as expected
 				editor = editor;
 			}
 		});
 
-		// Add paste handler for images
-		element.addEventListener('paste', (event) => {
-			const items = event.clipboardData?.items;
-			if (items) {
-				for (let i = 0; i < items.length; i++) {
-					if (items[i].type.indexOf('image') === 0) {
-						event.preventDefault();
-						const file = items[i].getAsFile();
-						if (file) {
-							handleImageUpload(file, editor);
-						}
-						break;
-					}
-				}
-			}
-		});
 	});
 
 	onDestroy(() => {
@@ -57,6 +37,7 @@
 		<div class="character-count mb-2 text-sm text-gray-500">
 			Characters: {characterCount}
 		</div>
+    <Toolbar {editor} />
 	{/if}
 
 	<div bind:this={element} class="prose min-h-[500px] max-w-none"></div>
