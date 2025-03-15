@@ -2,16 +2,16 @@
 	let { togglePreview }: { togglePreview: () => void } = $props();
 
 	import { post } from './post.svelte';
-	import { deleteImage, savePostOrUpdate, togglePublish, uploadImage } from '../../lib/utils';
+	import { deleteImage, savePostOrUpdate, togglePublish } from '../../lib/utils';
 	import { Button } from '$lib';
+	import { extra } from './extra.svelte';
 
-	async function handleImageSelect(event: Event) {
-		const input = event.target as HTMLInputElement;
-		if (input.files && input.files[0]) {
-			const imageFile = input.files[0];
-			post.featuredImage = await uploadImage(imageFile, `images/featured/${imageFile.name}`);
-		}
+	async function selectImage() {
+    extra.showImageModal = true;
+    extra.featured = true;
+			// post.featuredImage = await uploadImage(imageFile, `images/featured/${imageFile.name}`);
 	}
+  
 	let newCategory = $state('');
 	let newKeyword = $state('');
 	function addCategory() {
@@ -64,18 +64,6 @@
 		<textarea id="excerpt" bind:value={post.excerpt} class="textarea textarea-bordered h-24"
 		></textarea>
 
-		<label for="image" class="label">
-			<span class="label-text">Featured Image</span>
-		</label>
-		<input
-			type="file"
-			id="image"
-			accept="image/*"
-			onchange={handleImageSelect}
-			class="file-input file-input-bordered w-full"
-		/>
-
-
    <!-- Tags -->
     <div class="form-control w-full">
       <label for=""class="label">
@@ -123,7 +111,13 @@
         />
       </div>
     </div> 
-    
+ 
+		<label for="image" class="label">
+			<span class="label-text">Featured Image</span>
+		</label>
+	  <Button title="Select Featured Image" cb={selectImage} />
+
+   
 		{#if post.featuredImage}
 			<div class="relative w-full">
 				<img

@@ -1,4 +1,4 @@
-import { type Post, auth } from '$lib';
+import { type Post } from '$lib';
 
 // Form state
 export const post: Post = $state({
@@ -6,7 +6,7 @@ export const post: Post = $state({
 	content: '',
 	slug: '',
 	published: false,
-	author: auth.currentUser?.uid || '',
+	author: 'Kratosgado',
 	categories: [],
 	keywords: [],
 	featuredImage: undefined,

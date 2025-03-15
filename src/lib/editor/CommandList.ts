@@ -21,21 +21,21 @@ export const suggestions = (editor: Editor) =>
 				},
 				{
 					title: 'Link',
-					command({ editor, __ }) {
+					command({ editor }) {
 						const { from, to } = editor.state.selection;
 						extra.linkText = editor.state.doc.textBetween(from, to, ' ');
 						extra.showLinkModal = true;
 					}
 				},
 				{
-					title: 'Youtube Link',
-					command({ _, __ }) {
+					title: 'Youtube',
+					command() {
 						extra.showYoutubeModal = true;
 					}
 				},
 				{
 					title: 'Image',
-					command({ _, __ }) {
+					command() {
 						extra.showImageModal = true;
 					}
 				},
@@ -91,22 +91,6 @@ export const suggestions = (editor: Editor) =>
 					title: 'Table',
 					command: ({ editor, range }) => {
 						editor.chain().focus().deleteRange(range).insertTable({ rows: 3, cols: 3 }).run();
-					}
-				},
-				{
-					title: 'Image',
-					command: ({ editor, range }) => {
-						// Open a file picker dialog
-						const input = document.createElement('input');
-						input.type = 'file';
-						input.accept = 'image/*';
-						input.onchange = async () => {
-							if (input.files?.length) {
-								const file = input.files[0];
-								await handleImageUpload(file, editor, range);
-							}
-						};
-						input.click();
 					}
 				},
 				{

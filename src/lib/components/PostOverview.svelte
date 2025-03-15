@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Post } from '$lib/types';
+	import type { Post } from '$lib';
 	import { formatDate } from '$lib/utils';
 
 	let { post }: { post: Post } = $props();
@@ -15,7 +15,7 @@
 	</figure>
 	<div class="card-body">
 		<div class="badge badge-secondary mb-2">{post.categories}</div>
-		<a href={`/blog/${post.slug}`}><h3 class="card-title">{post.title}</h3></a>
+		<a href={`/articles/${post.slug}`}><h3 class="card-title">{post.title}</h3></a>
 		<p>{post.excerpt}</p>
 		<div class="mt-4 flex items-center text-sm text-gray-500">
 			<span>{formatDate(post.createdAt)}</span>
