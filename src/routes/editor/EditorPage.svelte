@@ -12,7 +12,7 @@
 	onMount(() => {
 		editor = new Editor({
 			element: element,
-			extensions ,
+			extensions,
 			content: post.content,
 			onUpdate: ({ editor }) => {
 				post.content = editor.getHTML();

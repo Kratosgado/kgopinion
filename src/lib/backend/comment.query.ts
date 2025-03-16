@@ -1,25 +1,23 @@
-import type { Category, Author, Post } from '$lib/utils';
-import type {
-	collection,
-	serverTimestamp,
+import { type Category, type Author, type Post, type Comment } from '$lib/utils';
+import {
 	addDoc,
-	updateDoc,
-	doc,
+	serverTimestamp,
 	increment,
 	query,
 	where,
 	orderBy,
 	getDocs,
 	getDoc,
-	deleteDoc
+	deleteDoc,
+	updateDoc
 } from 'firebase/firestore';
+import { getCollRef, getDocRef } from './helpers';
 
 // Add a comment
 export const addComment = async (
-	db: FirebaseFirestore,
 	commentData: Omit<Comment, 'id' | 'createdAt' | 'updatedAt' | 'likes'>
 ) => {
-	const commentsRef = collection(db, 'comments');
+	const commentsRef = getCollRef('comments');
 
 	const newComment = {
 		...commentData,
@@ -31,7 +29,7 @@ export const addComment = async (
 	const docRef = await addDoc(commentsRef, newComment);
 
 	// Update post comment count
-	await updateDoc(doc(db, 'posts', commentData.postId), {
+	await updateDoc(getDocRef('posts', commentData.postId), {
 		commentCount: increment(1)
 	});
 
@@ -39,9 +37,9 @@ export const addComment = async (
 };
 
 // Get comments for a post
-export const getPostComments = async (db: FirebaseFirestore, postId: string) => {
+export const getPostComments = async (postId: string) => {
 	const commentsQuery = query(
-		collection(db, 'comments'),
+		getCollRef('comments'),
 		where('postId', '==', postId),
 		orderBy('createdAt', 'asc')
 	);
@@ -49,16 +47,16 @@ export const getPostComments = async (db: FirebaseFirestore, postId: string) => 
 	const querySnapshot = await getDocs(commentsQuery);
 
 	const comments = querySnapshot.docs.map((doc) => ({
-		id: doc.id,
-		...(doc.data() as Comment)
+		...(doc.data() as Comment),
+		id: doc.id
 	}));
 
 	return comments;
 };
 
 // Update a comment
-export const updateComment = async (db: FirebaseFirestore, commentId: string, content: string) => {
-	const commentRef = doc(db, 'comments', commentId);
+export const updateComment = async (commentId: string, content: string) => {
+	const commentRef = getDocRef('comments', commentId);
 
 	await updateDoc(commentRef, {
 		content,
@@ -69,8 +67,8 @@ export const updateComment = async (db: FirebaseFirestore, commentId: string, co
 };
 
 // Delete a comment
-export const deleteComment = async (db: FirebaseFirestore, commentId: string) => {
-	const commentRef = doc(db, 'comments', commentId);
+export const deleteComment = async (commentId: string) => {
+	const commentRef = getDocRef('comments', commentId);
 	const commentSnapshot = await getDoc(commentRef);
 
 	if (!commentSnapshot.exists()) {
@@ -80,31 +78,27 @@ export const deleteComment = async (db: FirebaseFirestore, commentId: string) =>
 	const commentData = commentSnapshot.data() as Comment;
 
 	// Update post comment count
-	await updateDoc(doc(db, 'posts', commentData.postId), {
+	await updateDoc(getDocRef('posts', commentData.postId), {
 		commentCount: increment(-1)
 	});
 
 	// Delete the comment
 	await deleteDoc(commentRef);
-
 	return true;
 };
 
 // CATEGORIES QUERIES
 
 // Create a new category
-export const createCategory = async (
-	db: FirebaseFirestore,
-	categoryData: Omit<Category, 'id' | 'postCount'>
-) => {
-	const categoriesRef = collection(db, 'categories');
+export const createCategory = async (categoryData: Omit<Category, 'id' | 'postCount'>) => {
+	const categoriesRef = getCollRef('categories');
 
 	// Check if slug already exists
-	const slugQuery = query(categoriesRef, where('slug', '==', categoryData.slug));
+	const slugQuery = query(categoriesRef, where('slug', '==', categoryData.name));
 	const slugSnapshot = await getDocs(slugQuery);
 
 	if (!slugSnapshot.empty) {
-		throw new Error(`Category with slug "${categoryData.slug}" already exists`);
+		throw new Error(`Category with slug "${categoryData.name}" already exists`);
 	}
 
 	const newCategory = {
@@ -118,35 +112,31 @@ export const createCategory = async (
 };
 
 // Get all categories
-export const getAllCategories = async (db: FirebaseFirestore) => {
-	const categoriesQuery = query(collection(db, 'categories'), orderBy('name', 'asc'));
+export const getAllCategories = async () => {
+	const categoriesQuery = query(getCollRef('categories'), orderBy('name', 'asc'));
 
 	const querySnapshot = await getDocs(categoriesQuery);
 
-	const categories = querySnapshot.docs.map((doc) => ({
-		id: doc.id,
-		...(doc.data() as Category)
-	}));
+	const categories = querySnapshot.docs.map((doc) => doc.data() as Category);
 
 	return categories;
 };
 
 // Update a category
 export const updateCategory = async (
-	db: FirebaseFirestore,
 	categoryId: string,
 	categoryData: Partial<Omit<Category, 'id' | 'postCount'>>
 ) => {
-	const categoryRef = doc(db, 'categories', categoryId);
+	const categoryRef = getDocRef('categories', categoryId);
 
 	// If slug is being updated, check if new slug already exists
-	if (categoryData.slug) {
-		const categoriesRef = collection(db, 'categories');
-		const slugQuery = query(categoriesRef, where('slug', '==', categoryData.slug));
+	if (categoryData.name) {
+		const categoriesRef = getCollRef('categories');
+		const slugQuery = query(categoriesRef, where('slug', '==', categoryData.name));
 		const slugSnapshot = await getDocs(slugQuery);
 
 		if (!slugSnapshot.empty && slugSnapshot.docs[0].id !== categoryId) {
-			throw new Error(`Category with slug "${categoryData.slug}" already exists`);
+			throw new Error(`Category with slug "${categoryData.name}" already exists`);
 		}
 	}
 
@@ -156,8 +146,8 @@ export const updateCategory = async (
 };
 
 // Delete a category
-export const deleteCategory = async (db: FirebaseFirestore, categoryId: string) => {
-	const categoryRef = doc(db, 'categories', categoryId);
+export const deleteCategory = async (categoryId: string) => {
+	const categoryRef = getDocRef('categories', categoryId);
 	const categorySnapshot = await getDoc(categoryRef);
 
 	if (!categorySnapshot.exists()) {
@@ -178,12 +168,8 @@ export const deleteCategory = async (db: FirebaseFirestore, categoryId: string) 
 // USER/AUTHOR QUERIES
 
 // Create or update author profile
-export const upsertAuthorProfile = async (
-	db: FirebaseFirestore,
-	authorId: string,
-	authorData: Omit<Author, 'id'>
-) => {
-	const authorRef = doc(db, 'users', authorId);
+export const upsertAuthorProfile = async (authorId: string, authorData: Omit<Author, 'id'>) => {
+	const authorRef = getDocRef('users', authorId);
 
 	await updateDoc(authorRef, {
 		...authorData,
@@ -194,26 +180,26 @@ export const upsertAuthorProfile = async (
 };
 
 // Get author by ID
-export const getAuthorById = async (db: FirebaseFirestore, authorId: string) => {
-	const authorRef = doc(db, 'users', authorId);
+export const getAuthorById = async (authorId: string) => {
+	const authorRef = getDocRef('users', authorId);
 	const authorSnapshot = await getDoc(authorRef);
 
 	if (!authorSnapshot.exists()) return null;
 
 	const authorData = authorSnapshot.data() as Author;
 
-	return { id: authorId, ...authorData };
+	return { ...authorData, id: authorId };
 };
 
 // Get all authors
-export const getAllAuthors = async (db: FirebaseFirestore) => {
-	const authorsQuery = query(collection(db, 'users'), orderBy('displayName', 'asc'));
+export const getAllAuthors = async () => {
+	const authorsQuery = query(getCollRef('users'), orderBy('displayName', 'asc'));
 
 	const querySnapshot = await getDocs(authorsQuery);
 
 	const authors = querySnapshot.docs.map((doc) => ({
-		id: doc.id,
-		...(doc.data() as Author)
+		...(doc.data() as Author),
+		id: doc.id
 	}));
 
 	return authors;
@@ -222,33 +208,32 @@ export const getAllAuthors = async (db: FirebaseFirestore) => {
 // ANALYTICS AND STATS
 
 // Get blog statistics
-export const getBlogStatistics = async (db: FirebaseFirestore) => {
+export const getBlogStatistics = async () => {
 	// Get post count
-	const postsQuery = query(collection(db, 'posts'));
+	const postsQuery = query(getCollRef('posts'));
 	const postsSnapshot = await getDocs(postsQuery);
 	const totalPosts = postsSnapshot.size;
 
-	const publishedPostsQuery = query(collection(db, 'posts'), where('published', '==', true));
+	const publishedPostsQuery = query(getCollRef('posts'), where('published', '==', true));
 	const publishedPostsSnapshot = await getDocs(publishedPostsQuery);
 	const publishedPosts = publishedPostsSnapshot.size;
 
 	// Get comment count
-	const commentsQuery = query(collection(db, 'comments'));
+	const commentsQuery = query(getCollRef('comments'));
 	const commentsSnapshot = await getDocs(commentsQuery);
 	const totalComments = commentsSnapshot.size;
 
 	// Get total views and likes
-	let totalViews = 0;
+	const totalViews = 0;
 	let totalLikes = 0;
 
 	postsSnapshot.forEach((doc) => {
 		const data = doc.data() as Post;
-		totalViews += data.viewCount || 0;
 		totalLikes += data.likeCount || 0;
 	});
 
 	// Get category count
-	const categoriesQuery = query(collection(db, 'categories'));
+	const categoriesQuery = query(getCollRef('categories'));
 	const categoriesSnapshot = await getDocs(categoriesQuery);
 	const totalCategories = categoriesSnapshot.size;
 

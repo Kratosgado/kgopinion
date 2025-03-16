@@ -1,12 +1,8 @@
-import { Query, type Post } from '$lib';
+import { getRecentPosts } from '$lib/backend/post.query';
 
 export const load = async () => {
 	try {
-		const posts = await new Query<Post>('posts')
-			.orderBy('createdAt', 'desc')
-			.limit(6)
-			.get<Post[]>();
-
+		const { posts, lastVisible } = await getRecentPosts(6, null, true);
 		return { posts };
 	} catch (err) {
 		console.log(err);

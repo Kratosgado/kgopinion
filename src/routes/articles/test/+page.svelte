@@ -1,15 +1,135 @@
 <script lang="ts">
-	import { type Post, type Comment, type SEOMetadata, SEO } from '$lib';
+  import { page } from '$app/stores';
+	import type { Post } from '$lib';
   import { onMount } from 'svelte';
 
+  // Get the current slug from the URL
+  const slug = $page.params.slug;
   
-	export let data: { post: Post };
   // Post data (in a real app, you would fetch this based on the slug)
-  const {post} = data;
+  let post: Post;
   let comments: Comment[] = [];
   let relatedPosts: Post[] = [];
   let newComment = '';
   
+  // Simulate fetching post data
+  onMount(async () => {
+    // In a real app, you would fetch the post data from your API
+    post = {
+      title: "Getting Started with Svelte",
+      slug: "getting-started-with-svelte",
+      content: `
+        <p>Svelte is a radical new approach to building user interfaces. Whereas traditional frameworks like React and Vue do the bulk of their work in the browser, Svelte shifts that work into a compile step that happens when you build your app.</p>
+        
+        <p>Instead of using techniques like virtual DOM diffing, Svelte writes code that surgically updates the DOM when the state of your app changes.</p>
+        
+        <h2>Why Svelte?</h2>
+        
+        <p>Svelte has several advantages over other frameworks:</p>
+        
+        <ul>
+          <li>No virtual DOM overhead</li>
+          <li>Truly reactive</li>
+          <li>Less code to write</li>
+          <li>No complex state management libraries needed</li>
+        </ul>
+      `,
+      excerpt: "Learn how to build reactive web applications with Svelte framework.",
+      publishedAt: new Date("2023-05-15"),
+      published: true,
+      createdAt: new Date("2023-05-10"),
+      updatedAt: new Date("2023-05-15"),
+      authorId: "author1",
+      author: {
+        id: "author1",
+        name: "Jane Doe",
+        email: "jane@example.com",
+        bio: "Frontend developer and technical writer",
+        avatar: "https://i.pravatar.cc/150?u=jane",
+        social: {
+          twitter: "janedoe",
+          github: "janedoe",
+          linkedIn: "jane-doe"
+        }
+      },
+      categories: ["Development", "Frontend"],
+      keywords: ["svelte", "javascript", "frontend", "web development"],
+      featuredImage: "https://picsum.photos/seed/svelte/1200/600",
+      readTime: 5,
+      likeCount: 42,
+      commentCount: 7,
+      relatedPosts: ["the-power-of-daisyui", "web-performance-optimization"]
+    };
+    
+    // Simulate fetching comments
+    comments = [
+      {
+        id: "comment1",
+        postId: slug,
+        authorName: "John Smith",
+        authorAvatar: "https://i.pravatar.cc/150?u=john",
+        content: "Great article! I've been using Svelte for a few months now and I love it.",
+        createdAt: new Date("2023-05-16T10:30:00"),
+        updatedAt: new Date("2023-05-16T10:30:00"),
+        likes: 5
+      },
+      {
+        id: "comment2",
+        postId: slug,
+        authorName: "Alice Johnson",
+        authorAvatar: "https://i.pravatar.cc/150?u=alice",
+        content: "I'm new to Svelte. This was very helpful, thanks!",
+        createdAt: new Date("2023-05-17T14:20:00"),
+        updatedAt: new Date("2023-05-17T14:20:00"),
+        likes: 3
+      },
+      {
+        id: "comment3",
+        postId: slug,
+        authorName: "Bob Williams",
+        authorAvatar: "https://i.pravatar.cc/150?u=bob",
+        content: "How does Svelte compare to React in terms of performance?",
+        createdAt: new Date("2023-05-18T09:15:00"),
+        updatedAt: new Date("2023-05-18T09:15:00"),
+        likes: 2,
+        parentId: "comment1"
+      }
+    ];
+    
+    // Simulate fetching related posts
+    relatedPosts = [
+      {
+        title: "The Power of DaisyUI",
+        slug: "the-power-of-daisyui",
+        excerpt: "Discover how DaisyUI can streamline your Tailwind CSS workflow.",
+        featuredImage: "https://picsum.photos/seed/daisyui/800/600",
+        categories: ["Design"],
+        createdAt: new Date("2023-06-02"),
+        updatedAt: new Date("2023-06-02"),
+        published: true,
+        authorId: "author2",
+        likeCount: 28,
+        commentCount: 4,
+        readTime: 4,
+        content: ""
+      },
+      {
+        title: "Web Performance Optimization",
+        slug: "web-performance-optimization",
+        excerpt: "Tips and tricks to make your web applications blazing fast.",
+        featuredImage: "https://picsum.photos/seed/performance/800/600",
+        categories: ["Performance"],
+        createdAt: new Date("2023-07-10"),
+        updatedAt: new Date("2023-07-10"),
+        published: true,
+        authorId: "author3",
+        likeCount: 35,
+        commentCount: 9,
+        readTime: 7,
+        content: ""
+      }
+    ];
+  });
   
   function handleLike() {
     if (post) {
@@ -49,21 +169,25 @@
     
     // In a real app, you would send this to your API
   }
-  
-	const metadata: SEOMetadata = {
-		title: post.title,
-		description: post.excerpt,
-		keywords: post.keywords || [],
-		type: 'article',
-		ogImage: post.featuredImage,
-		publishedTime: post.createdAt.toUTCString(),
-		modifiedTime: post.updatedAt.toUTCString(),
-		author: post.author?.name
-	};
 </script>
 
-<SEO {metadata} />
-
+<svelte:head>
+  <title>{post ? post.title : 'Loading...'} - BlogFolio</title>
+  {#if post}
+    <meta name="description" content={post.excerpt} />
+    <meta name="keywords" content={post.keywords.join(', ')} />
+    <meta property="og:title" content={post.title} />
+    <meta property="og:description" content={post.excerpt} />
+    <meta property="og:image" content={post.featuredImage} />
+    <meta property="og:type" content="article" />
+    <meta property="article:published_time" content={post.publishedAt?.toISOString()} />
+    <meta property="article:modified_time" content={post.updatedAt.toISOString()} />
+    <meta property="article:author" content={post.author?.name} />
+    {#each post.keywords as keyword}
+      <meta property="article:tag" content={keyword} />
+    {/each}
+  {/if}
+</svelte:head>
 
 {#if post}
   <!-- Post Header -->

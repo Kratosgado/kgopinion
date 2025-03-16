@@ -2,8 +2,7 @@
 	let { togglePreview }: { togglePreview: () => void } = $props();
 
 	import { post } from './post.svelte';
-	import { deleteImage, savePostOrUpdate, togglePublish } from '../../lib/utils';
-	import { Button } from '$lib';
+	import { Button, savePostOrUpdate, togglePublish } from '$lib';
 	import { extra } from './extra.svelte';
 
 	async function selectImage() {
@@ -127,7 +126,7 @@
 				/>
 				<button
 					class="btn btn-circle btn-sm absolute right-2 top-2"
-					onclick={() => deleteImage(post.featuredImage!)}
+					onclick={() => post.featuredImage = undefined}
 				>
 					✕
 				</button>

@@ -1,35 +1,38 @@
 <script lang="ts">
-  // This would typically come from your backend or store
-  const categories = [
-    { name: "Development", count: 12, color: "primary" },
-    { name: "Design", count: 8, color: "secondary" },
-    { name: "Performance", count: 5, color: "accent" },
-    { name: "DevOps", count: 7, color: "info" },
-    { name: "Career", count: 9, color: "success" },
-    { name: "Artificial Intelligence", count: 6, color: "warning" },
-    { name: "Blockchain", count: 4, color: "error" },
-    { name: "Cybersecurity", count: 3, color: "primary" },
-  ];
+  import { getCategoryColor, Loading, type Category } from '$lib';
+  
+  export let data : {categories: Category[]};
+  const {categories} = data;
+  
+ 
 </script>
 
 <svelte:head>
-  <title>Categories - BlogFolio</title>
+  <title>Categories - KgOpinion</title>
+  <meta name="description" content="Browse articles by category on BlogFolio" />
 </svelte:head>
 
 <div class="container mx-auto py-12 px-4">
   <h1 class="text-4xl font-bold mb-8">Categories</h1>
   
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    {#each categories as category}
-      <div class="card bg-base-100 shadow-xl">
-        <div class="card-body">
-          <h2 class="card-title text-2xl">{category.name}</h2>
-          <p>{category.count} articles</p>
-          <div class="card-actions justify-end">
-            <button class="btn btn-{category.color}">View Articles</button>
+  {#if !categories}
+    <Loading />
+  {:else}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {#each categories as category}
+        <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow">
+          <div class="card-body">
+            <h2 class="card-title text-2xl">{category.name}</h2>
+            <div class="badge badge-{getCategoryColor(category.postCount)}">{category.postCount} articles</div>
+            {#if category.description}
+              <p class="mt-2">{category.description}</p>
+            {/if}
+            <div class="card-actions justify-end mt-4">
+              <a href={`/categories/${category.name.toLowerCase()}`} class="btn btn-primary">View Articles</a>
+            </div>
           </div>
         </div>
-      </div>
-    {/each}
-  </div>
+      {/each}
+    </div>
+  {/if}
 </div>

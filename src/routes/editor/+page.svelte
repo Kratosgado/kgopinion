@@ -4,7 +4,6 @@
 	import Preview from './Preview.svelte';
 
 	let showPreview = $state(false);
-	$inspect(showPreview);
 </script>
 
 <div class="min-h-screen bg-base-300 p-4">

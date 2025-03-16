@@ -9,11 +9,12 @@ import {
 	serverTimestamp,
 	setDoc,
 	startAfter,
+	updateDoc,
 	where,
 	writeBatch
 } from 'firebase/firestore';
-import { getCollectionRef, getDocRef } from './helpers';
-import { generateSlug } from './utils';
+import { getCollRef, getDocRef } from './helpers';
+import { generateSlug, parseDate } from './utils';
 
 export async function savePostOrUpdate(postData: Post): Promise<string> {
 	const slug = generateSlug(postData.title);
@@ -52,10 +53,11 @@ export async function getPostBySlug(slug: string) {
 	const postShot = await getDoc(ref);
 	if (!postShot.exists()) return null;
 
-	const post = postShot.data() as Post;
+	const post = parseDate<Post>(postShot.data());
 	if (post.authorId) {
 		post.author = await getAuthor(post.authorId);
 	}
+
 	return post;
 }
 
@@ -83,7 +85,7 @@ export async function deletePost(slug: string) {
 		});
 	});
 
-	const commentsQ = query(getCollectionRef('comments'), where('postId', '==', slug));
+	const commentsQ = query(getCollRef('comments'), where('postId', '==', slug));
 	const commentShots = await getDocs(commentsQ);
 	commentShots.forEach((c) => {
 		batch.delete(getDocRef('comments', c.id));
@@ -93,7 +95,8 @@ export async function deletePost(slug: string) {
 }
 
 export async function getRecentPosts(limitCount = 10, lastVisible?: any, onlyPublished = true) {
-	let postsQ = query(getCollectionRef('posts'), orderBy('publishedAt', 'desc'));
+	// let postsQ = query(getCollectionRef('posts'), orderBy('publishedAt', 'desc'));
+	let postsQ = query(getCollRef('posts'));
 
 	if (onlyPublished) {
 		postsQ = query(postsQ, where('published', '==', true));
@@ -107,13 +110,11 @@ export async function getRecentPosts(limitCount = 10, lastVisible?: any, onlyPub
 	const querySnapshot = await getDocs(postsQ);
 	const lastVisibleDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
 
-	const posts = querySnapshot.docs.map((doc) => ({
-		...(doc.data() as Post)
-	}));
+	const posts = querySnapshot.docs.map((doc) => parseDate(doc.data()));
 
 	return {
 		posts,
-		lastVisible: lastVisibleDoc
+		lastVisible: lastVisible && parseDate(lastVisibleDoc)
 	};
 }
 
@@ -129,7 +130,7 @@ export const getPostsByCategory = async (
 	const { limit: limitCount = 10, lastVisible, onlyPublished = true } = options;
 
 	let postsQuery = query(
-		getCollectionRef('posts'),
+		getCollRef('posts'),
 		where('categories', 'array-contains', cat),
 		orderBy('publishedAt', 'desc')
 	);
@@ -169,7 +170,7 @@ export async function getPostsByAuthor(
 	const { limit: limitCount = 10, lastVisible, onlyPublished = true } = options;
 
 	let postsQuery = query(
-		getCollectionRef('posts'),
+		getCollRef('posts'),
 		where('author', '==', authorId),
 		orderBy('publishedAt', 'desc')
 	);
@@ -187,10 +188,7 @@ export async function getPostsByAuthor(
 	const querySnapshot = await getDocs(postsQuery);
 	const lastVisibleDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
 
-	const posts = querySnapshot.docs.map((doc) => ({
-		id: doc.id,
-		...(doc.data() as Post)
-	}));
+	const posts = querySnapshot.docs.map((doc) => doc.data() as Post);
 
 	return {
 		posts,
@@ -198,109 +196,81 @@ export async function getPostsByAuthor(
 	};
 }
 
-Search posts by title or content
-export const searchPosts = async (db: FirebaseFirestore, searchTerm: string, options: {
-  limit?: number,
-  lastVisible?: any,
-  onlyPublished?: boolean
-}) => {
-  // Note: Basic Firestore doesn't support full-text search
-  // For production, consider Algolia, Elasticsearch, or Firestore extensions
-  // This is a simple implementation with limitations
-  
-  const { limit: limitCount = 10, onlyPublished = true } = options;
-  
-  // Convert to lowercase for case-insensitive search
-  const searchTermLower = searchTerm.toLowerCase();
-  
-  let postsQuery = query(
-    collection(db, 'posts'),
-    orderBy('title')
-  );
-  
-  if (onlyPublished) {
-    postsQuery = query(postsQuery, where('published', '==', true));
-  }
-  
-  // Fetch all matching documents (not efficient, but necessary without full-text search)
-  const querySnapshot = await getDocs(postsQuery);
-  
-  // Filter in memory
-  const matchingPosts = querySnapshot.docs
-    .filter(doc => {
-      const data = doc.data() as Post;
-      return (
-        data.title.toLowerCase().includes(searchTermLower) ||
-        data.content.toLowerCase().includes(searchTermLower) ||
-        data.excerpt.toLowerCase().includes(searchTermLower) ||
-        data.keywords.some(keyword => keyword.toLowerCase().includes(searchTermLower))
-      );
-    })
-    .map(doc => ({
-      id: doc.id,
-      ...doc.data() as Post
-    }))
-    .slice(0, limitCount);
-  
-  return {
-    posts: matchingPosts,
-    // No lastVisible since we're filtering in memory
-  };
+//Search posts by title or content
+export const searchPosts = async (
+	searchTerm: string,
+	options: {
+		limit?: number;
+		lastVisible?: any;
+		onlyPublished?: boolean;
+	}
+) => {
+	//TODO: Note: Basic Firestore doesn't support full-text search
+	// For production, consider Algolia, Elasticsearch, or Firestore extensions
+	// This is a simple implementation with limitations
+
+	const { limit: limitCount = 10, onlyPublished = true } = options;
+
+	// Convert to lowercase for case-insensitive search
+	const searchTermLower = searchTerm.toLowerCase();
+
+	let postsQuery = query(getCollRef('posts'), orderBy('title'));
+
+	if (onlyPublished) {
+		postsQuery = query(postsQuery, where('published', '==', true));
+	}
+
+	// Fetch all matching documents (not efficient, but necessary without full-text search)
+	const querySnapshot = await getDocs(postsQuery);
+
+	// Filter in memory
+	const matchingPosts = querySnapshot.docs
+		.filter((doc) => {
+			const data = doc.data() as Post;
+			return (
+				data.title.toLowerCase().includes(searchTermLower) ||
+				data.content.toLowerCase().includes(searchTermLower) ||
+				data.excerpt.toLowerCase().includes(searchTermLower) ||
+				data.keywords.some((keyword) => keyword.toLowerCase().includes(searchTermLower))
+			);
+		})
+		.map((doc) => ({
+			id: doc.id,
+			...(doc.data() as Post)
+		}))
+		.slice(0, limitCount);
+
+	return {
+		posts: matchingPosts
+		// No lastVisible since we're filtering in memory
+	};
 };
 
 // Get most popular posts
-export const getPopularPosts = async (db: FirebaseFirestore, options: {
-  limit?: number,
-  onlyPublished?: boolean
-}) => {
-  const { limit: limitCount = 10, onlyPublished = true } = options;
-  
-  let postsQuery = query(
-    collection(db, 'posts'),
-    orderBy('viewCount', 'desc')
-  );
-  
-  if (onlyPublished) {
-    postsQuery = query(postsQuery, where('published', '==', true));
-  }
-  
-  postsQuery = query(postsQuery, limit(limitCount));
-  
-  const querySnapshot = await getDocs(postsQuery);
-  
-  const posts = querySnapshot.docs.map(doc => ({
-    id: doc.id,
-    ...doc.data() as Post
-  }));
-  
-  return posts;
+export const getPopularPosts = async (options: { limit?: number; onlyPublished?: boolean }) => {
+	const { limit: limitCount = 10, onlyPublished = true } = options;
+
+	let postsQuery = query(getCollRef('posts'), orderBy('viewCount', 'desc'));
+
+	if (onlyPublished) {
+		postsQuery = query(postsQuery, where('published', '==', true));
+	}
+
+	postsQuery = query(postsQuery, limit(limitCount));
+
+	const querySnapshot = await getDocs(postsQuery);
+
+	const posts = querySnapshot.docs.map((doc) => parseDate(doc.data()));
+
+	return posts;
 };
 
 // Toggle like for a post
-export const togglePostLike = async (db: FirebaseFirestore, postId: string, userId: string) => {
-  const postRef = doc(db, 'posts', postId);
-  const likeRef = doc(db, 'likes', `${postId}_${userId}`);
-  
-  const likeDoc = await getDoc(likeRef);
-  
-  if (likeDoc.exists()) {
-    // Remove the like
-    await deleteDoc(likeRef);
-    await updateDoc(postRef, {
-      likeCount: increment(-1)
-    });
-    return false; // Not liked anymore
-  } else {
-    // Add the like
-    await addDoc(collection(db, 'likes'), {
-      postId,
-      userId,
-      createdAt: serverTimestamp()
-    });
-    await updateDoc(postRef, {
-      likeCount: increment(1)
-    });
-    return true; // Now liked
-  }
-};
+export const togglePostLike = async (slug: string) => {
+	const postRef = getDocRef('posts', slug);
 
+	await updateDoc(postRef, {
+		likeCount: increment(1)
+	});
+	return true; // Now liked
+};

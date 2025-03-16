@@ -44,8 +44,8 @@
 </script>
 
 <svelte:head>
-  <title>Contact Us - BlogFolio</title>
-  <meta name="description" content="Get in touch with the BlogFolio team" />
+  <title>Contact Us - KgOpinion</title>
+  <meta name="description" content="Get in touch with the KgOpinion team" />
 </svelte:head>
 
 <div class="container mx-auto py-12 px-4">

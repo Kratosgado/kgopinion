@@ -1,8 +1,6 @@
 import { error } from '@sveltejs/kit';
-import { doc, getDoc, serverTimestamp, setDoc } from 'firebase/firestore';
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { db, storage } from './firebase';
-import type { Post } from './types';
+import { doc, setDoc } from 'firebase/firestore';
+import { db } from './firebase';
 
 export async function togglePublish(id: string, publish: boolean) {
 	try {
@@ -20,10 +18,10 @@ export function formatDate(date: Date): string {
 	return new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' }).format(date);
 }
 
-function generateSlug(title: string) {
-	return title
-		.toLowerCase()
-		.replace(/[^\w\s-]/g, '') // Remove special characters
-		.replace(/\s+/g, '-') // Replace spaces with hyphens
-		.trim();
+export function getCategoryColor(count: number): string {
+	if (count > 10) return 'primary';
+	if (count > 7) return 'secondary';
+	if (count > 5) return 'accent';
+	if (count > 3) return 'info';
+	return 'success';
 }

@@ -1,16 +1,8 @@
 <script lang="ts">
 	import PostOverview from '$lib/components/PostOverview.svelte';
-	import { SEO, type Post, type SEOMetadata} from '$lib';
+	import { getCategoryColor, SEO, type Category, type Post, type SEOMetadata} from '$lib';
 
-	export let data: { posts: Post[] };
-
-	const categories = [
-		{ name: 'Development', count: 12, color: 'primary' },
-		{ name: 'Design', count: 8, color: 'secondary' },
-		{ name: 'Performance', count: 5, color: 'accent' },
-		{ name: 'DevOps', count: 7, color: 'info' },
-		{ name: 'Career', count: 9, color: 'success' }
-	];
+	export let data: { posts: Post[], categories: Category[] };
 
 	let email = '';
 
@@ -68,10 +60,10 @@
 				<div class="rounded-box bg-base-100 p-6 shadow-xl">
 					<h3 class="mb-6 text-2xl font-bold">Categories</h3>
 					<div class="space-y-4">
-						{#each categories as category}
+						{#each data.categories as category}
 							<div class="flex items-center justify-between">
 								<span class="text-lg">{category.name}</span>
-								<span class="badge badge-{category.color}">{category.count}</span>
+								<span class="badge badge-{getCategoryColor(category.postCount)}">{category.postCount}</span>
 							</div>
 						{/each}
 					</div>

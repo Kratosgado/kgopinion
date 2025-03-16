@@ -2,7 +2,7 @@ import { db } from '$lib/utils';
 import { collection, doc } from 'firebase/firestore';
 import type { Collections } from './utils';
 
-export const getCollectionRef = (name: Collections) => {
+export const getCollRef = (name: Collections) => {
 	return collection(db, name);
 };
 
