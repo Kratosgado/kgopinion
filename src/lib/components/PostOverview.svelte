@@ -20,7 +20,7 @@
 		<div class="mt-4 flex items-center text-sm text-gray-500">
 			<span>{formatDate(post.createdAt)}</span>
 			<span class="mx-2">•</span>
-			<span>By {post.author}</span>
+			<span>By {post.authorId}</span>
 		</div>
 		<div class="card-actions mt-4 justify-end">
 			<button class="btn btn-primary btn-sm">Read More</button>

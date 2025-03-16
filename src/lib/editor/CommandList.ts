@@ -1,4 +1,3 @@
-import { handleImageUpload } from '$lib/utils/imageUpload';
 import type { Editor, Range } from '@tiptap/core';
 import Suggestion from '@tiptap/suggestion';
 import { extra } from '../../routes/editor/extra.svelte';

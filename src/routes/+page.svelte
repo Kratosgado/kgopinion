@@ -1,8 +1,6 @@
 <script lang="ts">
 	import PostOverview from '$lib/components/PostOverview.svelte';
-	import type { Post } from '$lib/types';
-	import SEO from '$lib/seo/Head.svelte';
-	import type { SEOMetadata } from '$lib/seo';
+	import { SEO, type Post, type SEOMetadata} from '$lib';
 
 	export let data: { posts: Post[] };
 

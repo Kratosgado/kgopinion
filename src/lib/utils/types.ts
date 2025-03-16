@@ -2,6 +2,13 @@ export type Author = {
 	id: string;
 	name: string;
 	email: string;
+	bio?: string;
+	avatar: string;
+	social?: {
+		twitter?: string;
+		github?: string;
+		linkedIn?: string;
+	};
 };
 
 export type ImageType = {
@@ -17,13 +24,37 @@ export type Post = {
 	title: string;
 	content: string;
 	slug: string;
+	excerpt: string;
 	publishedAt?: Date;
 	published: boolean;
 	createdAt: Date;
 	updatedAt: Date;
-	author: string;
+	authorId: string;
+	author?: Author;
 	categories: string[];
 	keywords: string[];
 	featuredImage?: string;
-	excerpt: string;
+	readTime?: number;
+	likeCount: number;
+	commentCount: number;
+	relatedPosts?: string[];
+};
+
+// Comment type
+export type Comment = {
+	id: string; // Firestore document ID
+	postId: string; // Reference to post
+	authorName: string; // Denormalized author name
+	authorAvatar?: string; // Denormalized author avatar
+	content: string; // Comment text
+	createdAt: Date; // When comment was created
+	updatedAt: Date; // When comment was last edited
+	parentId?: string; // For nested comments (replies)
+	likes: number; // Like count
+};
+
+export type Category = {
+	name: string; // Display name
+	description?: string; // Category description
+	postCount: number; // Number of posts in category
 };
