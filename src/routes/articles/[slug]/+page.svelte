@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { type Post, type Comment, type SEOMetadata, SEO } from '$lib';
-  import { onMount } from 'svelte';
 
   
 	export let data: { post: Post };
@@ -68,7 +67,7 @@
 {#if post}
   <!-- Post Header -->
   <div class="w-full h-[40vh] relative">
-    <img src={post.featuredImage || "/placeholder.svg"} alt={post.title} class="w-full h-full object-cover" />
+    <img src={post.featuredImage || "/favicon.png"} alt={post.title} class="w-full h-full object-cover" />
     <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
       <div class="text-center text-white px-4 max-w-4xl">
         <div class="flex flex-wrap justify-center gap-2 mb-4">
@@ -79,7 +78,7 @@
         <h1 class="text-4xl md:text-5xl font-bold mb-4">{post.title}</h1>
         <div class="flex items-center justify-center gap-4 text-sm">
           <div class="flex items-center gap-2">
-            <img src={post.author?.avatar || "/placeholder.svg"} alt={post.author?.name} class="w-8 h-8 rounded-full" />
+            <img src={post.author?.avatar || "/favicon.png"} alt={post.author?.name} class="w-8 h-8 rounded-full" />
             <span>{post.author?.name}</span>
           </div>
           <span class="mx-2">•</span>
@@ -119,13 +118,13 @@
           </div>
           
           <div class="flex gap-2 mt-4 sm:mt-0">
-            <a href="#" class="btn btn-circle btn-sm btn-ghost">
+            <a href={post.author?.social?.twitter} aria-label="twitter" class="btn btn-circle btn-sm btn-ghost">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
             </a>
-            <a href="#" class="btn btn-circle btn-sm btn-ghost">
+            <a href={post.author?.social?.twitter} aria-label="twitter" class="btn btn-circle btn-sm btn-ghost">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
             </a>
-            <a href="#" class="btn btn-circle btn-sm btn-ghost">
+            <a href={post.author?.social?.twitter} aria-label="twitter" class="btn btn-circle btn-sm btn-ghost">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
             </a>
           </div>
@@ -134,7 +133,7 @@
         <!-- Author Bio -->
         {#if post.author}
           <div class="mt-8 p-6 bg-base-200 rounded-lg flex flex-col sm:flex-row gap-6 items-center sm:items-start">
-            <img src={post.author.avatar || "/placeholder.svg"} alt={post.author.name} class="w-24 h-24 rounded-full" />
+            <img src={post.author.avatar || "/favicon.png"} alt={post.author.name} class="w-24 h-24 rounded-full" />
             <div>
               <h3 class="text-xl font-bold mb-2">About {post.author.name}</h3>
               <p class="mb-4">{post.author.bio || 'No bio available.'}</p>

@@ -23,7 +23,6 @@ import TextStyle from '@tiptap/extension-text-style';
 import Typography from '@tiptap/extension-typography';
 import Underline from '@tiptap/extension-underline';
 import SlashCommands from './SlashCommands';
-import BubbleMenu from '@tiptap/extension-bubble-menu';
 
 export const extensions: Extensions = [
 	StarterKit,
@@ -52,7 +51,6 @@ export const extensions: Extensions = [
 		placeholder: 'Start writing your article...'
 	}),
 	SlashCommands,
-	BubbleMenu,
 	Paragraph,
 	// CodeBlockLowlight.configure({ lowlight }),
 	Color.configure({ types: [TextStyle.name, ListItem.name] }),
