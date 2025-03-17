@@ -13,7 +13,6 @@ import Highlight from '@tiptap/extension-highlight';
 import Dropcursor from '@tiptap/extension-dropcursor';
 import FontFamily from '@tiptap/extension-font-family';
 import ListItem from '@tiptap/extension-list-item';
-import Paragraph from '@tiptap/extension-paragraph';
 import Subscript from '@tiptap/extension-subscript';
 import Superscript from '@tiptap/extension-superscript';
 import TableHeader from '@tiptap/extension-table-header';
@@ -51,13 +50,11 @@ export const extensions: Extensions = [
 		placeholder: 'Start writing your article...'
 	}),
 	SlashCommands,
-	Paragraph,
 	// CodeBlockLowlight.configure({ lowlight }),
 	Color.configure({ types: [TextStyle.name, ListItem.name] }),
 	// TextStyle.configure({ types: [ListItem.name] }),
 	FontFamily,
 	Highlight,
-	Link,
 	TaskList,
 	TaskItem.configure({ nested: true }),
 	TextAlign.configure({ types: ['heading', 'paragraph'] }),

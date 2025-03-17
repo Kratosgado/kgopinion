@@ -9,7 +9,7 @@
 
 <svelte:head>
   <title>Categories - KgOpinion</title>
-  <meta name="description" content="Browse articles by category on BlogFolio" />
+  <meta name="description" content="Browse articles by category on KgOpinion" />
 </svelte:head>
 
 <div class="container mx-auto py-12 px-4">
@@ -28,7 +28,7 @@
               <p class="mt-2">{category.description}</p>
             {/if}
             <div class="card-actions justify-end mt-4">
-              <a href={`/categories/${category.name.toLowerCase()}`} class="btn btn-primary">View Articles</a>
+              <a href={`/articles/categories/${category.name.toLowerCase()}`} class="btn btn-primary">View Articles</a>
             </div>
           </div>
         </div>

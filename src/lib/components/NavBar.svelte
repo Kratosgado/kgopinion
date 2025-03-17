@@ -1,3 +1,13 @@
+<script lang="ts">
+	import { subscribeToAuthState, type Author } from "$lib/utils";
+	import { onDestroy } from "svelte";
+
+ let user: Author | undefined;
+const unsubscribe = subscribeToAuthState(u=> { user = u })
+
+  onDestroy(( )=> unsubscribe())
+</script>
+
 <header class="navbar mx-4 bg-base-100 shadow-lg">
 	<img alt="logo" src="/favicon.png" class="w-10 rounded-full" />
 
@@ -9,7 +19,7 @@
 			<ul class="menu menu-horizontal px-1">
 				<li><a href="/" class="font-medium">Home</a></li>
 				<li><a href="/articles" class="font-medium">Articles</a></li>
-				<li><a href="/articles/categories" class="font-medium">Categories</a></li>
+				<li><a href="/articles/articles/categories" class="font-medium">Categories</a></li>
 				<li><a href="/about" class="font-medium">About</a></li>
 				<li><a href="/contact" class="font-medium">Contact</a></li>
 			</ul>
@@ -38,7 +48,7 @@
 				>
 					<li><a href="/">Home</a></li>
 					<li><a href="/articles">Articles</a></li>
-					<li><a href="/articles/categories">Categories</a></li>
+					<li><a href="/articles/articles/categories">Categories</a></li>
 					<li><a href="/about">About</a></li>
 					<li><a href="/contact">Contact</a></li>
 				</ul>

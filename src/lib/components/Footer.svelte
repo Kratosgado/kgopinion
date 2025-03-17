@@ -71,7 +71,7 @@
 			<span class="footer-title">Quick Links</span>
 			<a href="/" class="link-hover link">Home</a>
 			<a href="/articles" class="link-hover link">Articles</a>
-			<a href="/categories" class="link-hover link">Categories</a>
+			<a href="/articles/categories" class="link-hover link">Categories</a>
 			<a href="/about" class="link-hover link">About</a>
 			<a href="/contact" class="link-hover link">Contact</a>
 		</div>

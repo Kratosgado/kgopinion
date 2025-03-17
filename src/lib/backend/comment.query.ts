@@ -169,7 +169,7 @@ export const deleteCategory = async (categoryId: string) => {
 
 // Create or update author profile
 export const upsertAuthorProfile = async (authorId: string, authorData: Omit<Author, 'id'>) => {
-	const authorRef = getDocRef('users', authorId);
+	const authorRef = getDocRef('admins', authorId);
 
 	await updateDoc(authorRef, {
 		...authorData,
@@ -181,7 +181,7 @@ export const upsertAuthorProfile = async (authorId: string, authorData: Omit<Aut
 
 // Get author by ID
 export const getAuthorById = async (authorId: string) => {
-	const authorRef = getDocRef('users', authorId);
+	const authorRef = getDocRef('admins', authorId);
 	const authorSnapshot = await getDoc(authorRef);
 
 	if (!authorSnapshot.exists()) return null;
@@ -193,7 +193,7 @@ export const getAuthorById = async (authorId: string) => {
 
 // Get all authors
 export const getAllAuthors = async () => {
-	const authorsQuery = query(getCollRef('users'), orderBy('displayName', 'asc'));
+	const authorsQuery = query(getCollRef('admins'), orderBy('displayName', 'asc'));
 
 	const querySnapshot = await getDocs(authorsQuery);
 

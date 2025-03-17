@@ -16,8 +16,8 @@
 </script>
 
 <svelte:head>
-  <title>Articles - BlogFolio</title>
-  <meta name="description" content="Browse all articles on BlogFolio" />
+  <title>Articles - KgOpinion</title>
+  <meta name="description" content="Browse all articles on KgOpinion" />
 </svelte:head>
 
 <div class="container mx-auto py-12 px-4">

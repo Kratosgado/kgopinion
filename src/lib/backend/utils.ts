@@ -18,4 +18,4 @@ export function generateSlug(title: string) {
 		.trim();
 }
 
-export type Collections = 'posts' | 'categories' | 'comments' | 'users';
+export type Collections = 'posts' | 'categories' | 'comments' | 'admins';

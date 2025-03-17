@@ -1,4 +1,4 @@
-import { db, type Author, type Post } from '$lib/utils';
+import { db, type Post } from '$lib/utils';
 import {
 	getDoc,
 	getDocs,
@@ -14,6 +14,7 @@ import {
 	writeBatch
 } from 'firebase/firestore';
 import { getCollRef, getDocRef } from './helpers';
+import { getAuthor } from './user.query';
 import { generateSlug, parseDate } from './utils';
 
 export async function savePostOrUpdate(postData: Post): Promise<string> {
@@ -59,14 +60,6 @@ export async function getPostBySlug(slug: string) {
 	}
 
 	return post;
-}
-
-async function getAuthor(id: string) {
-	const authorDoc = await getDoc(getDocRef('users', id));
-	if (authorDoc.exists()) {
-		return authorDoc.data() as Author;
-	}
-	return undefined;
 }
 
 export async function deletePost(slug: string) {
