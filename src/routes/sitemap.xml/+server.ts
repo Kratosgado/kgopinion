@@ -1,36 +1,34 @@
 // src/routes/sitemap.xml/+server.ts
 import { PUBLIC_SITE_URL } from '$env/static/public';
-import { Query } from '$lib/backend';
-import type { Post } from '$lib/types';
-import { formatDate } from '$lib/utils';
+import { type Post, formatDate, getAllPosts } from '$lib';
 
 // Helper function to escape XML special characters
 function escapeXml(unsafe: string): string {
-  return unsafe
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&apos;');
+	return unsafe
+		.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/"/g, '&quot;')
+		.replace(/'/g, '&apos;');
 }
 
 // Helper function to properly encode URLs for XML
 function formatUrl(url: string): string {
-  try {
-    // First encode the URL properly
-    const encodedUrl = encodeURI(url);
-    // Then escape any XML special characters
-    return escapeXml(encodedUrl);
-  } catch (error) {
-    console.error('Error formatting URL:', url, error);
-    return '';
-  }
+	try {
+		// First encode the URL properly
+		const encodedUrl = encodeURI(url);
+		// Then escape any XML special characters
+		return escapeXml(encodedUrl);
+	} catch (error) {
+		console.error('Error formatting URL:', url, error);
+		return '';
+	}
 }
 
 export async function GET() {
-  const posts: Post[] = await new Query<Post>("posts").get<Post[]>();
+	const posts: Post[] = await getAllPosts();
 
-  const sitemap = `<?xml version="1.0" encoding="UTF-8" ?>
+	const sitemap = `<?xml version="1.0" encoding="UTF-8" ?>
 <urlset
     xmlns="https://www.sitemaps.org/schemas/sitemap/0.9"
     xmlns:xhtml="https://www.w3.org/1999/xhtml"
@@ -44,23 +42,31 @@ export async function GET() {
         <changefreq>daily</changefreq>
         <priority>1.0</priority>
     </url>
-    ${posts.map(post => `    <url>
-        <loc>${formatUrl(`${PUBLIC_SITE_URL}/blog/${post.slug}`)}</loc>
+    ${posts
+			.map(
+				(post) => `    <url>
+        <loc>${formatUrl(`${PUBLIC_SITE_URL}/articles/${post.slug}`)}</loc>
         <lastmod>${formatDate(post.updatedAt)}</lastmod>
         <changefreq>weekly</changefreq>
-        <priority>0.8</priority>${post.featuredImage ? `
+        <priority>0.8</priority>${
+					post.featuredImage
+						? `
         <image:image>
             <image:loc>${formatUrl(post.featuredImage)}</image:loc>
             <image:title>${escapeXml(post.title)}</image:title>
-        </image:image>` : ''}
-    </url>`).join('\n')}
+        </image:image>`
+						: ''
+				}
+    </url>`
+			)
+			.join('\n')}
 </urlset>`.trim();
 
-  return new Response(sitemap, {
-    headers: {
-      'Content-Type': 'application/xml',
-      // Add cache control headers if needed
-      'Cache-Control': 'max-age=3600'
-    }
-  });
+	return new Response(sitemap, {
+		headers: {
+			'Content-Type': 'application/xml',
+			// Add cache control headers if needed
+			'Cache-Control': 'max-age=3600'
+		}
+	});
 }

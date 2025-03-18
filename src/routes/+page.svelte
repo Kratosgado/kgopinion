@@ -1,8 +1,8 @@
 <script lang="ts">
 	import PostOverview from '$lib/components/PostOverview.svelte';
-	import { getCategoryColor, SEO, type Category, type Post, type SEOMetadata} from '$lib';
+	import { getCategoryColor, SEO, type Category, type Post, type SEOMetadata } from '$lib';
 
-	export let data: { posts: Post[], categories: Category[] };
+	export let data: { posts: Post[]; categories: Category[] };
 
 	let email = '';
 
@@ -25,7 +25,7 @@
 
 <div class="flex min-h-screen flex-col">
 	<!-- Hero Section -->
-	<div class="hero min-h-[35vh]  bg-base-200">
+	<div class="hero min-h-[35vh] bg-base-200">
 		<div class="hero-content text-center">
 			<div class="max-w-md">
 				<h1 class="text-4xl font-bold">Welcome to KgOpinion</h1>
@@ -63,7 +63,9 @@
 						{#each data.categories as category}
 							<div class="flex items-center justify-between">
 								<span class="text-lg">{category.name}</span>
-								<span class="badge badge-{getCategoryColor(category.postCount)}">{category.postCount}</span>
+								<span class="badge badge-{getCategoryColor(category.postCount)}"
+									>{category.postCount}</span
+								>
 							</div>
 						{/each}
 					</div>

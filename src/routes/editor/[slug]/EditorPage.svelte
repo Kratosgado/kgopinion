@@ -2,7 +2,7 @@
 	import { onDestroy, onMount } from 'svelte';
 	import { Editor } from '@tiptap/core';
 	import { post } from './post.svelte';
-	import { extensions,LinkModal, ImageModal, Toolbar, YoutubeModal } from '$lib';
+	import { extensions, LinkModal, ImageModal, Toolbar, YoutubeModal } from '$lib';
 
 	let element: HTMLDivElement;
 	let editor: Editor;
@@ -22,7 +22,6 @@
 				editor = editor;
 			}
 		});
-
 	});
 
 	onDestroy(() => {
@@ -37,7 +36,7 @@
 		<div class="character-count mb-2 text-sm text-gray-500">
 			Characters: {characterCount}
 		</div>
-    <Toolbar {editor} />
+		<Toolbar {editor} />
 	{/if}
 
 	<div bind:this={element} class="prose min-h-[500px] max-w-none"></div>
@@ -51,7 +50,7 @@
 	{/if}
 </div>
 
-<YoutubeModal { editor }/>
+<YoutubeModal {editor} />
 <LinkModal {editor} />
 <ImageModal {editor} />
 

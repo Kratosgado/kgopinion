@@ -1,9 +1,8 @@
-<script lang='ts'>
-	import type { AuthState } from "$lib";
-	import { ProtectedRoute } from "$lib";
-  
-	let { children }: {children: (state: AuthState) => any} = $props();
+<script lang="ts">
+	import { ProtectedRoute } from '$lib';
+	import type { Snippet } from 'svelte';
 
+	let { children }: { children: Snippet } = $props();
 </script>
 
-<ProtectedRoute {children}/>
+<ProtectedRoute {children} />

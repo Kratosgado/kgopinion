@@ -111,6 +111,13 @@ export async function getRecentPosts(limitCount = 10, lastVisible?: any, onlyPub
 	};
 }
 
+export async function getAllPosts() {
+	let postsQ = query(getCollRef('posts'));
+	postsQ = query(postsQ, where('published', '==', true));
+	const querySnapshot = await getDocs(postsQ);
+	return querySnapshot.docs.map((doc) => parseDate(doc.data()));
+}
+
 // Get posts by category
 export const getPostsByCategory = async (
 	cat: string,

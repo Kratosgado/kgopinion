@@ -6,11 +6,11 @@
 	import { extra } from './extra.svelte';
 
 	async function selectImage() {
-    extra.showImageModal = true;
-    extra.featured = true;
-			// post.featuredImage = await uploadImage(imageFile, `images/featured/${imageFile.name}`);
+		extra.showImageModal = true;
+		extra.featured = true;
+		// post.featuredImage = await uploadImage(imageFile, `images/featured/${imageFile.name}`);
 	}
-  
+
 	let newCategory = $state('');
 	let newKeyword = $state('');
 	function addCategory() {
@@ -44,9 +44,9 @@
 <!-- Right Column - Post Details -->
 <div class="space-y-4 rounded-box bg-base-100 p-4 shadow-lg">
 	<div class="flex gap-2">
-    <Button title="Preview" cb={togglePreview} class="btn-primary" />
-    <Button title="Save Draft" cb={() => savePostOrUpdate(post)} />
-    <Button title="Publish" cb={() => togglePublish(post.slug!, true)} class="btn-secondary"/>
+		<Button title="Preview" cb={togglePreview} class="btn-primary" />
+		<Button title="Save Draft" cb={() => savePostOrUpdate(post)} />
+		<Button title="Publish" cb={() => togglePublish(post.slug!, true)} class="btn-secondary" />
 	</div>
 	<div class="divider"></div>
 	<h2 class="text-lg font-bold">Post Details</h2>
@@ -63,60 +63,59 @@
 		<textarea id="excerpt" bind:value={post.excerpt} class="textarea textarea-bordered h-24"
 		></textarea>
 
-   <!-- Tags -->
-    <div class="form-control w-full">
-      <label for=""class="label">
-        <span class="label-text text-lg font-bold">Categories</span>
-      </label>
-      <div class="flex flex-wrap gap-2 mb-2">
-        {#each post.categories as cat}
-          <div class="badge badge-primary gap-1">
-            {cat}
-            <button onclick={() => removeCategory(cat)} class="btn btn-xs btn-circle">×</button>
-          </div>
-        {/each}
-      </div>
-      <div class="join w-full">
-        <input 
-          type="text" 
-          bind:value={newCategory} 
-			onkeydown={(e) => handleKeyDown(e, addCategory)}
-          placeholder="Add a tag" 
-          class="input input-bordered join-item w-full"
-        />
-      </div>
-    </div> 
+		<!-- Tags -->
+		<div class="form-control w-full">
+			<label for="" class="label">
+				<span class="label-text text-lg font-bold">Categories</span>
+			</label>
+			<div class="flex flex-wrap gap-2 mb-2">
+				{#each post.categories as cat}
+					<div class="badge badge-primary gap-1">
+						{cat}
+						<button onclick={() => removeCategory(cat)} class="btn btn-xs btn-circle">×</button>
+					</div>
+				{/each}
+			</div>
+			<div class="join w-full">
+				<input
+					type="text"
+					bind:value={newCategory}
+					onkeydown={(e) => handleKeyDown(e, addCategory)}
+					placeholder="Add a tag"
+					class="input input-bordered join-item w-full"
+				/>
+			</div>
+		</div>
 
-   <!-- Tags -->
-    <div class="form-control w-full">
-      <label for=""class="label">
-        <span class="label-text text-lg font-bold">Keywords</span>
-      </label>
-      <div class="flex flex-wrap gap-2 mb-2">
-        {#each post.keywords as key}
-          <div class="badge badge-primary gap-1">
-            {key}
-            <button onclick={() => removeKeyword(key)} class="btn btn-xs btn-circle">×</button>
-          </div>
-        {/each}
-      </div>
-      <div class="join w-full">
-        <input 
-          type="text" 
-          bind:value={newKeyword} 
-			onkeydown={(e) => handleKeyDown(e, addKeyword)}
-          placeholder="Add a tag" 
-          class="input input-bordered join-item w-full"
-        />
-      </div>
-    </div> 
- 
+		<!-- Tags -->
+		<div class="form-control w-full">
+			<label for="" class="label">
+				<span class="label-text text-lg font-bold">Keywords</span>
+			</label>
+			<div class="flex flex-wrap gap-2 mb-2">
+				{#each post.keywords as key}
+					<div class="badge badge-primary gap-1">
+						{key}
+						<button onclick={() => removeKeyword(key)} class="btn btn-xs btn-circle">×</button>
+					</div>
+				{/each}
+			</div>
+			<div class="join w-full">
+				<input
+					type="text"
+					bind:value={newKeyword}
+					onkeydown={(e) => handleKeyDown(e, addKeyword)}
+					placeholder="Add a tag"
+					class="input input-bordered join-item w-full"
+				/>
+			</div>
+		</div>
+
 		<label for="image" class="label">
 			<span class="label-text">Featured Image</span>
 		</label>
-	  <Button title="Select Featured Image" cb={selectImage} />
+		<Button title="Select Featured Image" cb={selectImage} />
 
-   
 		{#if post.featuredImage}
 			<div class="relative w-full">
 				<img
@@ -126,7 +125,7 @@
 				/>
 				<button
 					class="btn btn-circle btn-sm absolute right-2 top-2"
-					onclick={() => post.featuredImage = undefined}
+					onclick={() => (post.featuredImage = undefined)}
 				>
 					✕
 				</button>

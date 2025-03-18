@@ -1,6 +1,6 @@
 import type { Editor, Range } from '@tiptap/core';
 import Suggestion from '@tiptap/suggestion';
-import { extra } from '../../routes/editor/extra.svelte';
+import { extra } from '../../routes/editor/[slug]/extra.svelte';
 
 // Command suggestion configuration
 export const suggestions = (editor: Editor) =>

@@ -1,6 +1,5 @@
 <script>
-
-	import { ProtectedRoute } from "$lib";
+	import { ProtectedRoute } from '$lib';
 
 	let { children } = $props();
 </script>

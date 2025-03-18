@@ -1,8 +1,3 @@
-
-🌼   daisyUI 4.12.23
-├─ ✔︎ 1 theme added		https://daisyui.com/docs/themes
-╰─ ❤︎ Support daisyUI project:	https://opencollective.com/daisyui
-
 import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
