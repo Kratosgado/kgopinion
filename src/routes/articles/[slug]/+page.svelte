@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { type Post, type Comment, type SEOMetadata, SEO } from '$lib';
+	import { type Post, type Comment, type SEOMetadata, SEO, togglePostLike } from '$lib';
 
 	export let data: { post: Post };
 	// Post data (in a real app, you would fetch this based on the slug)
@@ -11,7 +11,7 @@
 	function handleLike() {
 		if (post) {
 			post.likeCount += 1;
-			// In a real app, you would send this to your API
+      togglePostLike(post.slug)
 		}
 	}
 
@@ -31,8 +31,6 @@
 			comments = [comment, ...comments];
 			post.commentCount += 1;
 			newComment = '';
-
-			// In a real app, you would send this to your API
 		}
 	}
 
@@ -44,7 +42,6 @@
 			return comment;
 		});
 
-		// In a real app, you would send this to your API
 	}
 
 	const metadata: SEOMetadata = {

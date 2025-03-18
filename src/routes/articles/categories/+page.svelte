@@ -1,14 +1,18 @@
 <script lang="ts">
-	import { getCategoryColor, Loading, type Category } from '$lib';
+	import { getCategoryColor, Loading, SEO, type Category, type SEOMetadata } from '$lib';
 
 	export let data: { categories: Category[] };
 	const { categories } = data;
+const metadata: SEOMetadata = {
+    title: "Categories - KgOpinion",
+    description: "View all categories of articles posted on KgOpinion",
+    keywords: ['KgOpinion','blogger', 'categories', 'category']
+  }
 </script>
 
-<svelte:head>
-	<title>Categories - KgOpinion</title>
-	<meta name="description" content="Browse articles by category on KgOpinion" />
-</svelte:head>
+<SEO {metadata} />
+
+
 
 <div class="container mx-auto py-12 px-4">
 	<h1 class="text-4xl font-bold mb-8">Categories</h1>

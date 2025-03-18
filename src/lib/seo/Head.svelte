@@ -7,6 +7,7 @@
 	const defaultMetadata: SEOMetadata = {
 		type: 'website',
 		canonicalUrl: page.url.href,
+    ogImage: 'https://kgopinion.pages.dev/favicon.png',
 		title: '',
 		description: '',
 		keywords: []

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { getRecentPosts, type Post } from '$lib';
+	import { getPostsByAuthor, type Post } from '$lib';
 	import { onMount } from 'svelte';
 
 	// State
@@ -33,7 +33,7 @@
 
 	onMount(async () => {
 		try {
-			posts =  (await getRecentPosts(undefined, null, false)).posts;
+			posts =  await getPostsByAuthor(undefined, false, undefined);
 		} catch (err) {
 			console.error(err);
 		} finally {
@@ -42,7 +42,7 @@
 	});
 
 	function createNewPost() {
-		goto('/editor');
+		goto('/editor/new');
 	}
 
 	function editPost(slug: string) {

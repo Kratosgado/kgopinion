@@ -81,7 +81,7 @@
 					type="text"
 					bind:value={newCategory}
 					onkeydown={(e) => handleKeyDown(e, addCategory)}
-					placeholder="Add a tag"
+					placeholder="Add a category"
 					class="input input-bordered join-item w-full"
 				/>
 			</div>

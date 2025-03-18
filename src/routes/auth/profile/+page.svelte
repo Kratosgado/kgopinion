@@ -56,13 +56,10 @@
 		success = '';
 
 		try {
-			// Apply new avatar if provided
 			if (newAvatarUrl) {
 				editedAuthor.avatar = newAvatarUrl;
 			}
 
-			// In a real app, you would send the updated profile to your API
-			// For example:
 			await auth.updateProfile(editedAuthor);
 
 			success = 'Profile updated successfully';

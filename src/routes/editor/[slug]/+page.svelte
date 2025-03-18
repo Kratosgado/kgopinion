@@ -7,15 +7,11 @@
 	import Preview from './Preview.svelte';
 	import { post } from './post.svelte';
 
-	let showPreview = $state(false);
+	let showPreview = false;
 	let unsubscribe: Unsubscriber;
-  let {edit}: {edit: Post} = $props()
-
-	onMount(async () => {
-		unsubscribe = auth.subscribe((v) => {
-			post.author = v.user!;
-			post.authorId = v.user!.id;
-		});
+	export let data: { edit: Post };
+  
+  const edit = data.edit;
     post.slug = edit.slug;
     post.title = edit.slug;
     post.authorId = edit.authorId;
@@ -34,6 +30,12 @@
     post.relatedPosts = edit.relatedPosts;
     post.commentCount = edit.commentCount;
 
+
+	onMount(async () => {
+		unsubscribe = auth.subscribe((v) => {
+			post.author = v.user!;
+			post.authorId = v.user!.id;
+		});
 		onDestroy(() => unsubscribe && unsubscribe());
 	});
 </script>

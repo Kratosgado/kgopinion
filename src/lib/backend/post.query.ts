@@ -1,4 +1,4 @@
-import { db, type Post } from '$lib/utils';
+import { db, firebaseAuth, type Post } from '$lib/utils';
 import {
 	getDoc,
 	getDocs,
@@ -23,6 +23,7 @@ export async function savePostOrUpdate(postData: Post): Promise<string> {
 	const postRef = getDocRef('posts', slug);
 	const postShot = await getDoc(postRef);
 	const post = postShot.data() as Post;
+	delete postData.author;
 	await setDoc(
 		postRef,
 		{
@@ -38,6 +39,7 @@ export async function savePostOrUpdate(postData: Post): Promise<string> {
 	postData.categories.forEach((cat) => {
 		if (!post.categories.includes(cat)) {
 			const catref = getDocRef('categories', cat);
+			console.log('saving ', cat);
 			batch.update(catref, {
 				postCount: increment(1)
 			});
@@ -146,11 +148,9 @@ export const getPostsByCategory = async (
 	}
 
 	const querySnapshot = await getDocs(postsQuery);
-	const lastVisibleDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
+	const lastVisibleDoc = parseDate(querySnapshot.docs[querySnapshot.docs.length - 1]);
 
-	const posts = querySnapshot.docs.map((doc) => ({
-		...(doc.data() as Post)
-	}));
+	const posts = querySnapshot.docs.map((doc) => parseDate(doc.data()));
 
 	return {
 		posts,
@@ -159,19 +159,10 @@ export const getPostsByCategory = async (
 };
 
 // Get posts by author
-export async function getPostsByAuthor(
-	authorId: string,
-	options: {
-		limit?: number;
-		lastVisible?: any;
-		onlyPublished?: boolean;
-	}
-) {
-	const { limit: limitCount = 10, lastVisible, onlyPublished = true } = options;
-
+export async function getPostsByAuthor(limitCount = 10, onlyPublished = false, lastVisible?: any) {
 	let postsQuery = query(
 		getCollRef('posts'),
-		where('author', '==', authorId),
+		where('authorId', '==', firebaseAuth.currentUser?.uid),
 		orderBy('publishedAt', 'desc')
 	);
 
@@ -186,14 +177,8 @@ export async function getPostsByAuthor(
 	}
 
 	const querySnapshot = await getDocs(postsQuery);
-	const lastVisibleDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
-
-	const posts = querySnapshot.docs.map((doc) => doc.data() as Post);
-
-	return {
-		posts,
-		lastVisible: lastVisibleDoc
-	};
+	const posts = querySnapshot.docs.map((doc) => parseDate(doc.data()));
+	return posts;
 }
 
 //Search posts by title or content
@@ -226,7 +211,7 @@ export const searchPosts = async (
 	// Filter in memory
 	const matchingPosts = querySnapshot.docs
 		.filter((doc) => {
-			const data = doc.data() as Post;
+			const data = parseDate(doc.data());
 			return (
 				data.title.toLowerCase().includes(searchTermLower) ||
 				data.content.toLowerCase().includes(searchTermLower) ||
@@ -234,16 +219,10 @@ export const searchPosts = async (
 				data.keywords.some((keyword) => keyword.toLowerCase().includes(searchTermLower))
 			);
 		})
-		.map((doc) => ({
-			id: doc.id,
-			...(doc.data() as Post)
-		}))
+		.map((doc) => parseDate(doc.data()))
 		.slice(0, limitCount);
 
-	return {
-		posts: matchingPosts
-		// No lastVisible since we're filtering in memory
-	};
+	return matchingPosts;
 };
 
 // Get most popular posts

@@ -13,67 +13,9 @@
 	};
 	import { onMount } from 'svelte';
 
-	interface Author {
-		id: string;
-		name: string;
-		email: string;
-		bio?: string;
-		avatar: string;
-		social?: {
-			twitter?: string;
-			github?: string;
-			linkedIn?: string;
-		};
-		role: string;
-	}
-
-	let teamMembers: Author[] = [];
 	let loading = true;
 
 	onMount(async () => {
-		// In a real app, you would fetch team members from your API
-		teamMembers = [
-			{
-				id: 'author1',
-				name: 'Jane Doe',
-				email: 'jane@example.com',
-				bio: 'Frontend developer with 5 years of experience. Passionate about creating beautiful and accessible user interfaces.',
-				avatar: 'https://i.pravatar.cc/300?u=jane',
-				role: 'Lead Developer',
-				social: {
-					twitter: 'janedoe',
-					github: 'janedoe',
-					linkedIn: 'jane-doe'
-				}
-			},
-			{
-				id: 'author2',
-				name: 'John Smith',
-				email: 'john@example.com',
-				bio: 'Full-stack developer specializing in React and Node.js. Loves to share knowledge through writing and speaking.',
-				avatar: 'https://i.pravatar.cc/300?u=john',
-				role: 'Content Manager',
-				social: {
-					twitter: 'johnsmith',
-					github: 'johnsmith',
-					linkedIn: 'john-smith'
-				}
-			},
-			{
-				id: 'author3',
-				name: 'Alex Johnson',
-				email: 'alex@example.com',
-				bio: 'Performance optimization expert with a background in systems engineering. Focused on making the web faster for everyone.',
-				avatar: 'https://i.pravatar.cc/300?u=alex',
-				role: 'Technical Editor',
-				social: {
-					twitter: 'alexjohnson',
-					github: 'alexjohnson',
-					linkedIn: 'alex-johnson'
-				}
-			}
-		];
-
 		loading = false;
 	});
 </script>

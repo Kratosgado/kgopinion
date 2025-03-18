@@ -16,7 +16,7 @@
 		description: 'Explore programming and science topics in an engaging and informative way',
 		keywords: ['programming', 'science', 'development', 'software', 'technology'],
 		type: 'website',
-		ogImage: '../../static/favicon.png',
+		ogImage: 'https://kgopinion.pages.dev/favicon.png',
 		author: 'Kratosgado'
 	};
 </script>
@@ -43,7 +43,7 @@
 		<section class="mb-16">
 			<div class="mb-8 flex items-center justify-between">
 				<h2 class="text-3xl font-bold">Featured Posts</h2>
-				<a href="/blog" class="btn btn-outline btn-sm">View All</a>
+				<a href="/articles" class="btn btn-outline btn-sm">View All</a>
 			</div>
 
 			<div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">

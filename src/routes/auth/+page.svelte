@@ -1,7 +1,7 @@
 <!-- src/routes/auth/+page.svelte -->
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { auth, initialState, type AuthState } from '$lib';
+	import { auth, initialState, SEO, type AuthState, type SEOMetadata } from '$lib';
 	import { onDestroy, onMount } from 'svelte';
 	import type { Unsubscriber } from 'svelte/motion';
 
@@ -72,7 +72,15 @@
 		isRegistering = !isRegistering;
 		error = '';
 	}
+  const metadata: SEOMetadata = {
+    title: "Sign in- KgOpinion",
+    description: "Become a creator",
+    keywords: ['KgOpinion','blogger', 'contact', 'developer']
+  }
 </script>
+
+<SEO {metadata} />
+
 
 <div class="min-h-screen flex items-center justify-center bg-base-200 px-4">
 	<div class="card w-full max-w-md bg-base-100 shadow-xl">

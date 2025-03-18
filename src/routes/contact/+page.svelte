@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { emailAddress } from '$lib';
+	import { emailAddress, SEO, type SEOMetadata } from '$lib';
 
 	let name = '';
 	let email = '';
@@ -41,12 +41,14 @@
 			submitting = false;
 		}
 	}
+  const metadata: SEOMetadata = {
+    title: "Contact Us - KgOpinion",
+    description: "Get in touch with the us",
+    keywords: ['KgOpinion', 'contact', 'developer']
+  }
 </script>
 
-<svelte:head>
-	<title>Contact Us - KgOpinion</title>
-	<meta name="description" content="Get in touch with the KgOpinion team" />
-</svelte:head>
+<SEO {metadata} />
 
 <div class="container mx-auto py-12 px-4">
 	<h1 class="text-4xl font-bold mb-8">Contact Us</h1>
