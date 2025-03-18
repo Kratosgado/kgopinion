@@ -34,15 +34,14 @@
 	let authState: AuthState = initialState;
 	let unsubscribe: Unsubscriber;
 
-	if (authState && authState.isAuthenticated) {
-		// Redirect to login page with return URL
-		const returnUrl = window.location.toString();
-		console.log('reurn to: ', returnUrl);
-		goto('/');
-	}
+	
 	onMount(async () => {
 		unsubscribe = auth.subscribe((v) => {
 			authState = v;
+      if (authState && authState.isAuthenticated) {
+    const returnUrl =decodeURIComponent(window.location.search.split('=')[1]);
+		goto(returnUrl);
+	}
 		});
 
 		onDestroy(() => unsubscribe()); // Handle password reset request
