@@ -1,5 +1,4 @@
-import { goto } from '$app/navigation';
-import { firebaseAuth } from '$lib/utils';
+import { firebaseAuth, subscribeToAuthState, toAuthState, type Author } from '$lib/utils';
 import {
 	GoogleAuthProvider,
 	signInWithEmailAndPassword,
@@ -7,16 +6,17 @@ import {
 	type User
 } from 'firebase/auth';
 import { writable } from 'svelte/store';
+import { addAuthor, getAuthor, updateAuthor } from './user.query';
 
 export type AuthState = {
-	user: User | null;
+	user: Author | null;
 	isAuthenticated: boolean;
 	isLoading: boolean;
 	error: string | null;
 };
 
 // Initial state
-const initialState: AuthState = {
+export const initialState: AuthState = {
 	user: null,
 	isAuthenticated: false,
 	isLoading: true,
@@ -31,15 +31,17 @@ const createAuthStore = () => {
 		subscribe,
 
 		// Initialize auth state
-		initialize: async () => {
+		initialize: async (u: User | null) => {
 			update((state) => ({ ...state, isLoading: true, error: null }));
 
 			try {
-				// In a real app, you would check if the user is authenticated
-				// For example:
-				const user = firebaseAuth.currentUser;
+				if (u) {
+					if (!(await getAuthor(u.uid))) {
+						console.log('addin author');
+						await addAuthor(u);
+					}
+					const user = (await getAuthor(u.uid)) || null;
 
-				if (user) {
 					update((state) => ({
 						...state,
 						user,
@@ -72,10 +74,15 @@ const createAuthStore = () => {
 
 			try {
 				const { user } = await signInWithEmailAndPassword(firebaseAuth, email, password);
+				if (!(await getAuthor(user.uid))) {
+					console.log('addin author');
+					await addAuthor(user);
+				}
+				const us = (await getAuthor(user.uid)) || null;
 
 				update((state) => ({
 					...state,
-					user,
+					user: us,
 					isAuthenticated: true,
 					isLoading: false
 				}));
@@ -97,12 +104,12 @@ const createAuthStore = () => {
 
 			try {
 				const { user } = await signInWithPopup(firebaseAuth, new GoogleAuthProvider());
-				update((state) => ({
-					...state,
-					user,
-					isAuthenticated: true,
-					isLoading: false
-				}));
+				// update((state) => ({
+				// 	...state,
+				// 	user,
+				// 	isAuthenticated: true,
+				// 	isLoading: false
+				// }));
 
 				return true;
 			} catch (err) {
@@ -145,14 +152,11 @@ const createAuthStore = () => {
 		},
 
 		// Update user profile
-		updateProfile: async (userData: Partial<User>) => {
-			update((state) => ({ ...state, isLoading: true, error: null }));
+		updateProfile: async (userData: Partial<Author>) => {
+			update((state) => ({ ...state, error: null }));
 
 			try {
-				// await updateUserProfile(userData);
-
-				// Simulate API call
-				await new Promise((resolve) => setTimeout(resolve, 1000));
+				await updateAuthor(userData);
 
 				update((state) => ({
 					...state,
@@ -185,5 +189,7 @@ export const auth = createAuthStore();
 
 // Initialize auth state when the app loads
 if (typeof window !== 'undefined') {
-	auth.initialize();
+	toAuthState(async (u) => {
+		await auth.initialize(u);
+	});
 }

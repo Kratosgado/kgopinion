@@ -57,7 +57,6 @@ export const extensions: Extensions = [
 	Highlight,
 	TaskList,
 	TaskItem.configure({ nested: true }),
-	TextAlign.configure({ types: ['heading', 'paragraph'] }),
 	Underline,
 	Subscript,
 	Superscript,
@@ -65,17 +64,9 @@ export const extensions: Extensions = [
 	// TableRow,
 	TableHeader,
 	CharacterCount,
-	Placeholder.configure({
-		placeholder: 'Write something ...'
-	}),
 	Typography,
 	Focus.configure({
 		className: 'focus-ring',
 		mode: 'all'
-	}),
-	Dropcursor.configure({
-		class: 'dropcursor',
-		width: 2,
-		color: '#958DF1'
 	})
 ];

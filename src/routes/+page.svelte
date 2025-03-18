@@ -28,7 +28,7 @@
 	<div class="hero min-h-[35vh]  bg-base-200">
 		<div class="hero-content text-center">
 			<div class="max-w-md">
-				<h1 class="text-5xl font-bold">Welcome to KgOpinion</h1>
+				<h1 class="text-4xl font-bold">Welcome to KgOpinion</h1>
 				<p class="py-6">
 					Discover insightful articles on web development, design, and technology. Stay updated with
 					the latest trends and best practices.

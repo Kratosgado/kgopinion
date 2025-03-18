@@ -3,12 +3,30 @@
 </script>
 
 <!-- Footer -->
-<footer class="footer mt-auto bg-neutral p-10 text-neutral-content">
-	<div class="container mx-auto grid grid-cols-1 gap-8 md:grid-cols-3">
-		<div>
-			<span class="footer-title">KgOpinion</span>
-			<p class="mt-2">Providing reliable tech content since 2025</p>
-			<div class="mt-4 flex gap-4">
+ 
+      <!-- Footer -->
+      <footer class="footer p-10 bg-base-300 text-base-content mt-auto">
+        <div>
+          <span class="footer-title">KgOpinion</span> 
+          <p class="max-w-xs">A platform for bloggers and content creators to share their knowledge and insights.</p>
+        </div> 
+        <div>
+          <span class="footer-title">Company</span> 
+          <a href="/about" class="link link-hover">About</a> 
+          <a href="/contact" class="link link-hover">Contact</a> 
+          <a href="/terms" class="link link-hover">Terms of Service</a> 
+          <a href="/privacy" class="link link-hover">Privacy Policy</a>
+        </div> 
+        <div>
+          <span class="footer-title">Explore</span> 
+          <a href="/articles" class="link link-hover">Articles</a> 
+          <a href="/articles/categories" class="link link-hover">Categories</a> 
+          <a href="/authors" class="link link-hover">Authors</a> 
+          <a href="/tags" class="link link-hover">Tags</a>
+        </div> 
+        <div>
+          <span class="footer-title">Social</span> 
+         	<div class="mt-4 flex gap-4">
 				<a
 					href={twitterLink}
 					target="_blank"
@@ -66,23 +84,9 @@
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
           </a>
 			</div>
-		</div>
-		<div>
-			<span class="footer-title">Quick Links</span>
-			<a href="/" class="link-hover link">Home</a>
-			<a href="/articles" class="link-hover link">Articles</a>
-			<a href="/articles/categories" class="link-hover link">Categories</a>
-			<a href="/about" class="link-hover link">About</a>
-			<a href="/contact" class="link-hover link">Contact</a>
-		</div>
-		<div>
-			<span class="footer-title">Legal</span>
-			<a href="/terms" class="link-hover link">Terms of use</a>
-			<a href="/privacy" class="link-hover link">Privacy policy</a>
-			<a href="/cookies" class="link-hover link">Cookie policy</a>
-		</div>
-	</div>
-</footer>
+
+        </div>
+      </footer>
 <div class="footer footer-center bg-base-300 p-4 text-base-content">
 	<p>Copyright © 2025 - All rights reserved by KgOpinion</p>
 </div>

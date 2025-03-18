@@ -1,11 +1,11 @@
 <script lang="ts">
-	import type { Author } from '$lib';
-  import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
+	import { Loading, auth, initialState,  type AuthState, type Author } from '$lib';
+  import { onDestroy, onMount } from 'svelte';
+	import type { Unsubscriber } from 'svelte/store';
   
   // State
-  let author: Author;
   let editMode = false;
-  let isLoading = true;
   let isSaving = false;
   let error = '';
   let success = '';
@@ -13,46 +13,30 @@
   // Form state (for editing)
   let editedAuthor: Author;
   let newAvatarUrl = '';
+   let authState: AuthState = initialState;
+  let unsubscribe: Unsubscriber;
   
-  // Initialize author data
+  // Initialize authState!.user!.data
   onMount(async () => {
-    try {
-      // In a real app, you would fetch the author data from your API
-      // For example:
-      // const userData = await fetchCurrentUser();
+     unsubscribe = auth.subscribe(v => {
+       authState = v;
+      if (!authState.isLoading && !authState.isAuthenticated) {
+        const returnUrl = encodeURIComponent(window.location.pathname);
+        goto(`/auth?returnUrl=${returnUrl}`)
+     }
       
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Sample author data
-      author = {
-        id: "author1",
-        name: "Jane Doe",
-        email: "jane@example.com",
-        bio: "Frontend developer with 5 years of experience. Passionate about creating beautiful and accessible user interfaces.",
-        avatar: "https://i.pravatar.cc/300?u=jane",
-        social: {
-          twitter: "janedoe",
-          github: "janedoe",
-          linkedIn: "jane-doe"
-        }
-      };
-      
-      // Initialize edited author with a copy of the current author data
-      editedAuthor = JSON.parse(JSON.stringify(author));
-    } catch (err) {
-      console.error(err);
-      error = 'Failed to load profile data. Please try again.';
-    } finally {
-      isLoading = false;
-    }
+      editedAuthor = JSON.parse(JSON.stringify(authState.user))
+   })
+     
+  onDestroy(() => unsubscribe && unsubscribe())
+    
   });
   
   // Toggle edit mode
   function toggleEditMode() {
     if (editMode) {
       // Discard changes
-      editedAuthor = JSON.parse(JSON.stringify(author));
+      editedAuthor = JSON.parse(JSON.stringify(authState.user));
       newAvatarUrl = '';
     }
     
@@ -80,13 +64,7 @@
       
       // In a real app, you would send the updated profile to your API
       // For example:
-      // await updateUserProfile(editedAuthor);
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Update the author data with the edited version
-      author = JSON.parse(JSON.stringify(editedAuthor));
+      await auth.updateProfile(editedAuthor);
       
       success = 'Profile updated successfully';
       editMode = false;
@@ -114,7 +92,7 @@
   <div class="flex justify-between items-center mb-8">
     <h1 class="text-4xl font-bold">My Profile</h1>
     
-    {#if !isLoading && !editMode}
+    {#if !authState.isLoading && !editMode}
       <button class="btn btn-primary" on:click={toggleEditMode}>
         Edit Profile
       </button>
@@ -135,10 +113,8 @@
     </div>
   {/if}
   
-  {#if isLoading}
-    <div class="flex justify-center items-center py-12">
-      <div class="loading loading-spinner loading-lg"></div>
-    </div>
+  {#if authState.isLoading}
+   <Loading />
   {:else}
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
       <!-- Profile Information -->
@@ -206,7 +182,7 @@
                           type="text" 
                           id="twitter"
                           on:focus={ensureSocialExists}
-                          bind:value={editedAuthor.social.twitter} 
+                          bind:value={editedAuthor.social!.twitter} 
                           class="input input-bordered w-full" 
                           placeholder="username"
                         />
@@ -223,7 +199,7 @@
                           type="text" 
                           id="github"
                           on:focus={ensureSocialExists}
-                          bind:value={editedAuthor.social.github} 
+                          bind:value={editedAuthor.social!.github} 
                           class="input input-bordered w-full" 
                           placeholder="username"
                         />
@@ -240,7 +216,7 @@
                           type="text" 
                           id="linkedin"
                           on:focus={ensureSocialExists}
-                          bind:value={editedAuthor.social.linkedIn} 
+                          bind:value={editedAuthor.social!.linkedIn} 
                           class="input input-bordered w-full" 
                           placeholder="username"
                         />
@@ -283,28 +259,28 @@
                   <div class="space-y-3">
                     <div>
                       <span class="text-gray-500">Name:</span>
-                      <span class="ml-2 font-medium">{author.name}</span>
+                      <span class="ml-2 font-medium">{authState!.user!.name}</span>
                     </div>
                     <div>
                       <span class="text-gray-500">Email:</span>
-                      <span class="ml-2 font-medium">{author.email}</span>
+                      <span class="ml-2 font-medium">{authState!.user!.email}</span>
                     </div>
-                    {#if author.bio}
+                    {#if authState!.user!.bio}
                       <div>
                         <span class="text-gray-500">Bio:</span>
-                        <p class="mt-1">{author.bio}</p>
+                        <p class="mt-1">{authState!.user!.bio}</p>
                       </div>
                     {/if}
                   </div>
                 </div>
                 
-                {#if author.social}
+                {#if authState!.user!.social}
                   <div>
                     <h3 class="text-lg font-semibold mb-2">Social Media</h3>
                     <div class="flex flex-wrap gap-3">
-                      {#if author.social.twitter}
+                      {#if authState!.user!.social.twitter}
                         <a 
-                          href={`https://twitter.com/${author.social.twitter}`} 
+                          href={`https://twitter.com/${authState!.user!.social.twitter}`} 
                           target="_blank" 
                           rel="noopener noreferrer" 
                           class="btn btn-outline btn-sm gap-2"
@@ -314,9 +290,9 @@
                         </a>
                       {/if}
                       
-                      {#if author.social.github}
+                      {#if authState!.user!.social.github}
                         <a 
-                          href={`https://github.com/${author.social.github}`} 
+                          href={`https://github.com/${authState!.user!.social.github}`} 
                           target="_blank" 
                           rel="noopener noreferrer" 
                           class="btn btn-outline btn-sm gap-2"
@@ -326,9 +302,9 @@
                         </a>
                       {/if}
                       
-                      {#if author.social.linkedIn}
+                      {#if authState!.user!.social.linkedIn}
                         <a 
-                          href={`https://linkedin.com/in/${author.social.linkedIn}`} 
+                          href={`https://linkedin.com/in/${authState!.user!.social.linkedIn}`} 
                           target="_blank" 
                           rel="noopener noreferrer" 
                           class="btn btn-outline btn-sm gap-2"
@@ -354,7 +330,7 @@
             
             <div class="avatar mb-4">
               <div class="w-32 h-32 rounded-full">
-                <img src={editMode && newAvatarUrl ? newAvatarUrl : author.avatar} alt={author.name} />
+                <img src={editMode && newAvatarUrl ? newAvatarUrl : authState!.user!.avatar} alt={authState.user!.name} />
               </div>
             </div>
             
@@ -370,7 +346,7 @@
                   placeholder="https://example.com/avatar.jpg" 
                   class="input input-bordered w-full" 
                 />
-                <label class="label">
+                <label for="" class="label">
                   <span class="label-text-alt">Enter a URL for your profile picture</span>
                 </label>
               </div>
@@ -387,7 +363,7 @@
                   accept="image/*" 
                   class="file-input file-input-bordered w-full" 
                 />
-                <label class="label">
+                <label for="" class="label">
                   <span class="label-text-alt">Max size: 2MB</span>
                 </label>
               </div>
@@ -428,21 +404,22 @@
             <div class="flex flex-col md:flex-row gap-6 items-center md:items-start">
               <div class="avatar">
                 <div class="w-24 h-24 rounded-full">
-                  <img src={author.avatar || "/placeholder.svg"} alt={author.name} />
+                  <img src={authState!.user!.avatar || "/placeholder.svg"} alt={authState.user!.name} />
                 </div>
               </div>
               
               <div class="flex-1">
-                <h3 class="text-xl font-bold">{author.name}</h3>
-                {#if author.bio}
-                  <p class="mt-2">{author.bio}</p>
+                <h3 class="text-xl font-bold">{authState!.user!.name}</h3>
+                {#if authState!.user!.bio}
+                  <p class="mt-2">{authState!.user!.bio}</p>
                 {/if}
                 
-                {#if author.social}
+                {#if authState!.user!.social}
                   <div class="flex gap-3 mt-4">
-                    {#if author.social.twitter}
+                    {#if authState!.user!.social.twitter}
                       <a 
-                        href={`https://twitter.com/${author.social.twitter}`} 
+                        aria-label="twitter"
+                        href={`https://twitter.com/${authState!.user!.social.twitter}`} 
                         target="_blank" 
                         rel="noopener noreferrer" 
                         class="btn btn-circle btn-sm btn-ghost"
@@ -451,9 +428,10 @@
                       </a>
                     {/if}
                     
-                    {#if author.social.github}
+                    {#if authState!.user!.social.github}
                       <a 
-                        href={`https://github.com/${author.social.github}`} 
+                        aria-label="twitter"
+                        href={`https://github.com/${authState!.user!.social.github}`} 
                         target="_blank" 
                         rel="noopener noreferrer" 
                         class="btn btn-circle btn-sm btn-ghost"
@@ -462,9 +440,10 @@
                       </a>
                     {/if}
                     
-                    {#if author.social.linkedIn}
+                    {#if authState!.user!.social.linkedIn}
                       <a 
-                        href={`https://linkedin.com/in/${author.social.linkedIn}`} 
+                        href={`https://linkedin.com/in/${authState!.user!.social.linkedIn}`} 
+                        aria-label="twitter"
                         target="_blank" 
                         rel="noopener noreferrer" 
                         class="btn btn-circle btn-sm btn-ghost"

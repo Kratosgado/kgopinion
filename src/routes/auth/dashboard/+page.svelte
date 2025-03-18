@@ -117,15 +117,15 @@
   });
   
   function createNewPost() {
-    goto('/edit');
+    goto('/editor');
   }
   
   function editPost(slug: string) {
-    goto(`/edit/${slug}`);
+    goto(`/editor/${slug}`);
   }
   
   function viewPost(slug: string) {
-    goto(`/${slug}`);
+    goto(`/articles/${slug}`);
   }
   
   async function togglePublishStatus(post: Post) {
@@ -229,7 +229,7 @@
           placeholder="Search posts..." 
           class="input input-bordered" 
         />
-        <button class="btn btn-square">
+        <button aria-label="search" class="btn btn-square">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
         </button>
       </div>
@@ -325,10 +325,10 @@
               </td>
               <td>
                 <div class="dropdown dropdown-end">
-                  <label tabindex="0" class="btn btn-ghost btn-xs">
+                  <label for="" tabindex="-1" class="btn btn-ghost btn-xs">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
                   </label>
-                  <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                  <ul tabindex="-2" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
                     <li><button on:click={() => editPost(post.slug)}>Edit</button></li>
                     {#if post.published}
                       <li><button on:click={() => viewPost(post.slug)}>View</button></li>

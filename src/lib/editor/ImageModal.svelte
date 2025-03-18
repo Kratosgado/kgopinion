@@ -190,11 +190,11 @@
     }
   }
   
-  function selectLibraryImage(image: Imagetype | null) {
+  function selectLibraryImage(image: ImageType | null) {
     selectedLibraryImage = image;
   }
   
-  async function deleteLibraryImage(image: Imagetype, event: MouseEvent & { currentTarget: EventTarget & HTMLButtonElement; }) {
+  async function deleteLibraryImage(image: ImageType, event: MouseEvent & { currentTarget: EventTarget & HTMLButtonElement; }) {
     // Stop the click event from selecting the image
     event.stopPropagation();
     

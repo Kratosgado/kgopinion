@@ -1,8 +1,9 @@
 <!-- src/routes/auth/+page.svelte -->
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { auth, type AuthState } from '$lib';
-	import { onDestroy } from 'svelte';
+	import { auth, initialState, type AuthState } from '$lib';
+	import { onDestroy, onMount } from 'svelte';
+	import type { Unsubscriber } from 'svelte/motion';
 	
   
   // Form state
@@ -12,8 +13,6 @@
   let error = '';
   let isRegistering = false;
   
-  let authState: AuthState | null = null
-  const unsubscribe = auth.subscribe(v => { authState = v});
   // For registration
   let name = '';
   let confirmPassword = '';
@@ -33,10 +32,24 @@
      if( await auth.signIn(email, password))
       goto('/dashboard');
   }
-  onDestroy(unsubscribe)
   
-
-// Handle password reset request
+   let authState: AuthState = initialState;
+  let unsubscribe: Unsubscriber;
+  
+      if ( authState && authState.isAuthenticated) {
+       // Redirect to login page with return URL
+        const returnUrl = window.location.toString();
+      console.log("reurn to: ", returnUrl)
+      goto('/')
+      }
+  onMount(async () => {
+      unsubscribe = auth.subscribe(v => {
+    authState = v;
+   })
+    
+  onDestroy(() => unsubscribe())// Handle password reset request
+  });
+  
   async function resetPassword() {
     if (!email) {
       error = 'Please enter your email address';
@@ -87,7 +100,7 @@
       <!-- Google Sign In Button -->
       <button 
         class="btn btn-outline w-full mb-4 gap-2" 
-        on:click={auth.signInWithGoogle}
+        onclick={auth.signInWithGoogle}
         disabled={authState?.isLoading}
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -98,7 +111,7 @@
       
       <div class="divider">OR</div>
       
-      <form on:submit|preventDefault={handleSubmit} class="space-y-4">
+      <form onsubmit={handleSubmit} class="space-y-4">
         {#if isRegistering}
           <!-- Name field (only for registration) -->
           <div class="form-control">
@@ -139,7 +152,7 @@
               <button 
                 type="button" 
                 class="label-text-alt link link-hover" 
-                on:click={resetPassword}
+                onclick={resetPassword}
                 disabled={authState?.isLoading}
               >
                 Forgot password?
@@ -205,7 +218,7 @@
           <button 
             type="button" 
             class="link link-primary" 
-            on:click={toggleMode}
+            onclick={toggleMode}
             disabled={authState?.isLoading}
           >
             {isRegistering ? 'Sign In' : 'Register'}

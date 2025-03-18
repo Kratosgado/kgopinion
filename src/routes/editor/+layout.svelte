@@ -2,7 +2,7 @@
 
 	import { ProtectedRoute } from "$lib";
 
+	let { children } = $props();
 </script>
-<ProtectedRoute>
-  <slot />
-</ProtectedRoute>
+
+<ProtectedRoute {children} />

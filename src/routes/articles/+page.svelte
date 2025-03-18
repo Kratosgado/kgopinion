@@ -49,7 +49,7 @@
       {#each filteredPosts as post}
         <div class="card bg-base-100 shadow-xl h-full hover:shadow-2xl transition-shadow">
           <figure>
-            <img src={post.featuredImage || "/placeholder.svg"} alt={post.title} class="h-48 w-full object-cover" />
+            <img src={post.featuredImage || "/favicon.png"} alt={post.title} class="h-48 w-full object-cover" />
           </figure>
           <div class="card-body">
             <div class="flex flex-wrap gap-2 mb-2">

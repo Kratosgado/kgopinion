@@ -1,31 +1,30 @@
 <script lang="ts">
-  import { auth, type AuthState } from '$lib/backend';
-  import { redirect } from '@sveltejs/kit';
+  import { auth, initialState, type AuthState } from '$lib/backend';
   import { onDestroy, onMount } from 'svelte';
   import type { Unsubscriber } from 'svelte/motion';
   import Loading from './Loading.svelte';
+	import { goto } from '$app/navigation';
   
-	let { children } = $props();
+	let { children }: {children: (state: AuthState) => any} = $props();
   // State
-  let state: AuthState | null = $state(null);
+   let authState: AuthState = $state(initialState);
   let unsubscribe: Unsubscriber;
   
   onMount(async () => {
       unsubscribe = auth.subscribe(v => {
-    state = v;
-   })
-      if (!state?.isAuthenticated) {
-       // Redirect to login page with return URL
+       authState = v;
+      if (!authState.isLoading && !authState.isAuthenticated) {
         const returnUrl = encodeURIComponent(window.location.pathname);
-        redirect(301, '/auth')
-      }
-    
-  onDestroy(unsubscribe)
+        goto(`/auth?returnUrl=${returnUrl}`)
+     }
+   })
+     
+  onDestroy(() => unsubscribe && unsubscribe())
   });
 </script>
 
-{#if state?.isLoading}
+{#if authState?.isLoading}
   <Loading />
-{:else if state?.isAuthenticated}
-  {@render children()}
+{:else if authState.isAuthenticated}
+  {@render children(authState)}
 {/if}
