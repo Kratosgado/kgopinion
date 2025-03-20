@@ -97,15 +97,15 @@
 		<label for="my-drawer-3" class="drawer-overlay"></label>
 		<ul class="menu p-4 w-80 h-full bg-base-200">
 			<!-- Mobile navigation -->
-			<li><a href="/" class:active={page.url.pathname === '/'}>Home</a></li>
-			<li><a href="/articles" class:active={page.url.pathname === '/articles'}>Articles</a></li>
-			<li>
+			<li aria-label="home"><a href="/" class:active={page.url.pathname === '/'}>Home</a></li>
+			<li aria-label="articles"><a href="/articles" class:active={page.url.pathname === '/articles'}>Articles</a></li>
+			<li aria-label="categories">
 				<a href="/articles/categories" class:active={page.url.pathname === '/articles/categories'}
 					>Categories</a
 				>
 			</li>
-			<li><a href="/about" class:active={page.url.pathname === '/about'}>About</a></li>
-			<li><a href="/contact" class:active={page.url.pathname === '/contact'}>Contact</a></li>
+			<li aria-label="about"><a href="/about" class:active={page.url.pathname === '/about'}>About</a></li>
+			<li aria-label="contact"><a href="/contact" class:active={page.url.pathname === '/contact'}>Contact</a></li>
 
 			<!-- Divider -->
 			<div class="divider"></div>
