@@ -1,4 +1,5 @@
 export { default as Button } from './Button.svelte';
+export { default as Status } from './Status.svelte';
 export { default as Loading } from './Loading.svelte';
 export { default as Footer } from './Footer.svelte';
 export { default as Socials } from './Socials.svelte';

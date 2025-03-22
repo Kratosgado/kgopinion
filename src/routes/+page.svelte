@@ -33,7 +33,7 @@
 					Discover insightful articles on web development, design, and technology. Stay updated with
 					the latest trends and best practices.
 				</p>
-				<button class="btn btn-primary">Get Started</button>
+				<a href="/articles" class="btn btn-primary">Get Started</a>
 			</div>
 		</div>
 	</div>

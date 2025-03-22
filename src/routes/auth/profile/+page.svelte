@@ -1,22 +1,31 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { Loading, auth, initialState, type AuthState, type Author } from '$lib';
+	import { Loading, Status, auth, initialState, type AuthState, type Author } from '$lib';
 	import { onDestroy, onMount } from 'svelte';
 	import type { Unsubscriber } from 'svelte/store';
 
 	// State
-	let editMode = false;
-	let isSaving = false;
-	let error = '';
-	let success = '';
+	let editMode = $state(false);
+	let isSaving = $state(false);
+	let error : string = $state('');
+	let success : string = $state('');
 
 	// Form state (for editing)
-	let editedAuthor: Author;
-	let newAvatarUrl = '';
-	let authState: AuthState = initialState;
+	let editedAuthor: Author | undefined= $state(undefined);
+	let newAvatarUrl = $state('');
+	let authState: AuthState = $state(initialState);
 	let unsubscribe: Unsubscriber;
 
-	// Initialize authState!.user!.data
+  function setStatus({err, succ}: {err?: string; succ?: string}){
+    error = err|| '';
+    success = succ || '';
+        setTimeout(() => {
+    error = '';
+    success = '';
+  }, 8000);
+  }
+
+ 	// Initialize authState!.user!.data
 	onMount(async () => {
 		unsubscribe = auth.subscribe((v) => {
 			authState = v;
@@ -40,14 +49,13 @@
 		}
 
 		editMode = !editMode;
-		error = '';
-		success = '';
+    setStatus({})
 	}
 
 	// Save profile changes
 	async function saveProfile() {
-		if (!editedAuthor.name || !editedAuthor.email) {
-			error = 'Name and email are required';
+		if (!editedAuthor?.name || !editedAuthor.email) {
+      setStatus({err: 'Name and email are required'})
 			return;
 		}
 
@@ -62,11 +70,12 @@
 
 			await auth.updateProfile(editedAuthor);
 
-			success = 'Profile updated successfully';
+      setStatus({succ:'Profile updated successfully'})
+
 			editMode = false;
 		} catch (err) {
 			console.error(err);
-			error = 'Failed to update profile. Please try again.';
+      setStatus({err:'Failed to update profile. Please try again.'})
 		} finally {
 			isSaving = false;
 		}
@@ -74,8 +83,8 @@
 
 	// Initialize social object if it doesn't exist
 	function ensureSocialExists() {
-		if (!editedAuthor.social) {
-			editedAuthor.social = {};
+		if (!editedAuthor!.social) {
+			editedAuthor!.social = {};
 		}
 	}
 </script>
@@ -89,45 +98,11 @@
 		<h1 class="text-4xl font-bold">My Profile</h1>
 
 		{#if !authState.isLoading && !editMode}
-			<button class="btn btn-primary" on:click={toggleEditMode}> Edit Profile </button>
+			<button class="btn btn-primary" onclick={toggleEditMode}> Edit Profile </button>
 		{/if}
 	</div>
 
-	{#if error}
-		<div class="alert alert-error mb-6">
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				class="stroke-current shrink-0 h-6 w-6"
-				fill="none"
-				viewBox="0 0 24 24"
-				><path
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					stroke-width="2"
-					d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-				/></svg
-			>
-			<span>{error}</span>
-		</div>
-	{/if}
-
-	{#if success}
-		<div class="alert alert-success mb-6">
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				class="stroke-current shrink-0 h-6 w-6"
-				fill="none"
-				viewBox="0 0 24 24"
-				><path
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					stroke-width="2"
-					d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-				/></svg
-			>
-			<span>{success}</span>
-		</div>
-	{/if}
+  <Status {success} {error} />
 
 	{#if authState.isLoading}
 		<Loading />
@@ -141,7 +116,7 @@
 							<!-- Edit Mode -->
 							<h2 class="card-title text-2xl mb-6">Edit Profile</h2>
 
-							<form on:submit|preventDefault={saveProfile} class="space-y-6">
+							<form onsubmit={saveProfile} class="space-y-6">
 								<!-- Basic Information -->
 								<div class="space-y-4">
 									<div class="form-control">
@@ -151,7 +126,7 @@
 										<input
 											type="text"
 											id="name"
-											bind:value={editedAuthor.name}
+											bind:value={editedAuthor!.name}
 											class="input input-bordered w-full"
 											required
 										/>
@@ -164,7 +139,7 @@
 										<input
 											type="email"
 											id="email"
-											bind:value={editedAuthor.email}
+											bind:value={editedAuthor!.email}
 											class="input input-bordered w-full"
 											required
 										/>
@@ -176,7 +151,7 @@
 										</label>
 										<textarea
 											id="bio"
-											bind:value={editedAuthor.bio}
+											bind:value={editedAuthor!.bio}
 											class="textarea textarea-bordered h-24 w-full"
 											placeholder="Tell readers about yourself..."
 										></textarea>
@@ -197,8 +172,8 @@
 												<input
 													type="text"
 													id="twitter"
-													on:focus={ensureSocialExists}
-													bind:value={editedAuthor.social!.twitter}
+													onfocus={ensureSocialExists}
+													bind:value={editedAuthor!.social!.twitter}
 													class="input input-bordered w-full"
 													placeholder="username"
 												/>
@@ -214,8 +189,8 @@
 												<input
 													type="text"
 													id="github"
-													on:focus={ensureSocialExists}
-													bind:value={editedAuthor.social!.github}
+													onfocus={ensureSocialExists}
+													bind:value={editedAuthor!.social!.github}
 													class="input input-bordered w-full"
 													placeholder="username"
 												/>
@@ -231,8 +206,8 @@
 												<input
 													type="text"
 													id="linkedin"
-													on:focus={ensureSocialExists}
-													bind:value={editedAuthor.social!.linkedIn}
+													onfocus={ensureSocialExists}
+													bind:value={editedAuthor!.social!.linkedIn}
 													class="input input-bordered w-full"
 													placeholder="username"
 												/>
@@ -246,7 +221,7 @@
 									<button
 										type="button"
 										class="btn btn-outline"
-										on:click={toggleEditMode}
+										onclick={toggleEditMode}
 										disabled={isSaving}
 									>
 										Cancel
