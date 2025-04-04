@@ -13,7 +13,7 @@
 
 	const metadata: SEOMetadata = {
 		title: 'Kgopinion',
-		description: 'Explore programming and science topics in an engaging and informative way',
+		description: 'Explore programming and science topics in an engaging and informative way. Read challenging thoughts including that will make you question your existence.',
 		keywords: ['programming', 'science', 'development', 'software', 'technology'],
 		type: 'website',
 		ogImage: 'https://kgopinion.pages.dev/favicon.png',

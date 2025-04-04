@@ -39,7 +39,6 @@ export async function savePostOrUpdate(postData: Post): Promise<string> {
 	postData.categories.forEach((cat) => {
 		if (!post.categories.includes(cat)) {
 			const catref = getDocRef('categories', cat);
-			console.log('saving ', cat);
 			batch.update(catref, {
 				postCount: increment(1)
 			});

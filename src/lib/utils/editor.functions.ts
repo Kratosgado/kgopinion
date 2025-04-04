@@ -1,10 +1,10 @@
 import { error } from '@sveltejs/kit';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc, updateDoc } from 'firebase/firestore';
 import { db } from './firebase';
 
 export async function togglePublish(id: string, publish: boolean) {
 	try {
-		await setDoc(doc(db, 'post', id), {
+		await updateDoc(doc(db, 'post', id), {
 			published: publish
 		});
 		console.log('Post published');

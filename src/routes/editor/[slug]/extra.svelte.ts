@@ -3,6 +3,8 @@ export const extra = $state({
 	showImageModal: false,
 	showLinkModal: false,
 	showYoutubeModal: false,
+	error: '',
+	success: '',
 
 	featured: false
 });

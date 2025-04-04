@@ -13,6 +13,20 @@
 
 	let newCategory = $state('');
 	let newKeyword = $state('');
+   async function savePost(){
+    try {
+      const res = await savePostOrUpdate(post);
+      extra.success = res;
+      setTimeout(() => {
+        extra.success = '';
+      }, 5000)
+    } catch (err) {
+      extra.error = err.message;
+      setTimeout(() => {
+        extra.error = '';
+      }, 5000)
+    }
+  }
 	function addCategory() {
 		if (newCategory && !post.categories.includes(newCategory)) {
 			post.categories = [...post.categories, newCategory];
@@ -45,7 +59,7 @@
 <div class="space-y-4 rounded-box bg-base-100 p-4 shadow-lg">
 	<div class="flex gap-2">
 		<Button title="Preview" cb={togglePreview} class="btn-primary" />
-		<Button title="Save Draft" cb={() => savePostOrUpdate(post)} />
+		<Button title="Save Draft" cb={savePost} />
 		<Button title="Publish" cb={() => togglePublish(post.slug!, true)} class="btn-secondary" />
 	</div>
 	<div class="divider"></div>
